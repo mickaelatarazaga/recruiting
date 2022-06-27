@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,12 +17,12 @@ public class CandidateRequest {
     @Schema(name = "lastName", example = "Ramos", type = "String")
     private String lastName;
 
-    @Schema(name = "typeOfDni", example = "0", type = "String")
+    @Schema(name = "typeOfDni", example = "DNI", type = "String")
     private TypeOfDni typeOfDni;
 
     @Schema(name = "dniNumber", example = "39879638", type = "String")
     private String dniNumber;
 
     @Schema(name = "birthday", example = "1998-11-02", type = "String")
-    private Date birthday;
+    private String birthday;
 }
