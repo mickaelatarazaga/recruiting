@@ -15,7 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @NoArgsConstructor
@@ -34,22 +34,23 @@ public class Candidate {
     private boolean deleted = Boolean.FALSE;
 
     @Column(name = "first_name")
-    @NotEmpty(message = "First Name cannot be blank")
+    @NotNull(message = "First Name cannot be null")
     private String firstName;
 
     @Column(name = "last_name")
-    @NotEmpty(message = "Last Name cannot be blank")
+    @NotNull(message = "Last Name cannot be null")
     private String lastName;
 
     @Column(name = "type_dni")
-    @NotEmpty(message = "Type of DNI cannot be blank")
+    @NotNull(message = "Type of DNI cannot be null")
     private TypeOfDni typeOfDni;
 
     @Column(name = "dni_number")
-    @NotEmpty(message = "DNI number cannot be blank")
+    @NotNull(message = "DNI number cannot be null")
     private String dniNumber;
 
-    @NotEmpty(message = "Birthday cannot be blank")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @NotNull(message = "Birthday cannot be null")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date birthday;
+
 }

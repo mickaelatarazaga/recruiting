@@ -10,6 +10,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,6 +44,22 @@ public class CandidateServiceImp implements CandidateService {
         candidate.get().setDeleted(true);
         candidateRepository.save(candidate.get());
         return "Successfully deleted Candidate";
+    }
+
+    @Override
+    public String update(CandidateRequest request) throws NotFoundException, ParseException {
+        Optional<Candidate> candidate = candidateRepository.findByDniNumber(request.getDniNumber());
+        if (!candidate.isPresent()) {
+            throw new NotFoundException("The Candidate DNI number " + request.getDniNumber() + " not found");
+        }
+        candidate.get().setFirstName(request.getFirstName());
+        candidate.get().setLastName(request.getLastName());
+        candidate.get().setTypeOfDni(request.getTypeOfDni());
+        candidate.get().setDniNumber(request.getDniNumber());
+        SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
+        candidate.get().setBirthday(formatDate.parse(request.getBirthday()));
+        candidateRepository.save(candidate.get());
+        return "Successfully updated Candidate";
     }
 
 }

@@ -15,11 +15,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.text.ParseException;
 
 @Tag(name = "Candidates")
 @RestController
@@ -35,7 +37,7 @@ public class CandidateController {
             @ApiResponse(responseCode = "409", description = "The Candidate DNI number already exist", content = @Content)
     })
     @PostMapping("/create")
-    public ResponseEntity<String> registerUser(@Valid @RequestBody CandidateRequest request) throws DataAlreadyExistException {
+    public ResponseEntity<String> saveCandidate(@Valid @RequestBody CandidateRequest request) throws DataAlreadyExistException {
         return new ResponseEntity<>(candidateService.create(request), HttpStatus.CREATED);
     }
 
@@ -46,7 +48,17 @@ public class CandidateController {
 
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id) throws NotFoundException {
+    public ResponseEntity<String> deleteCandidate(@PathVariable Long id) throws NotFoundException {
         return new ResponseEntity<>(candidateService.delete(id), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Update Candidate by Id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Successfully updated Candidate", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Candidate not found", content = @Content)
+    })
+    @PutMapping("/update")
+    public ResponseEntity<String> updateCandidate(@Valid @RequestBody CandidateRequest request) throws NotFoundException, ParseException {
+        return new ResponseEntity<>(candidateService.update(request), HttpStatus.OK);
     }
 }

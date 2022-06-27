@@ -6,23 +6,30 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class CandidateRequest {
 
-    @Schema(name = "firstName", example = "Mariana", type = "String")
+    @NotBlank(message = "First Name cannot be blank")
+    @Schema(name = "firstName", example = "Mariana", type = "String", required = true)
     private String firstName;
 
-    @Schema(name = "lastName", example = "Ramos", type = "String")
+    @NotBlank(message = "Last Name cannot be blank")
+    @Schema(name = "lastName", example = "Ramos", type = "String", required = true)
     private String lastName;
 
-    @Schema(name = "typeOfDni", example = "DNI", type = "String")
+    @Schema(name = "typeOfDni", example = "DNI", type = "String", required = true)
     private TypeOfDni typeOfDni;
 
-    @Schema(name = "dniNumber", example = "39879638", type = "String")
+    @NotBlank(message = "DNI number cannot be blank")
+    @Schema(name = "dniNumber", example = "39879638", type = "String", required = true)
     private String dniNumber;
 
-    @Schema(name = "birthday", example = "1998-11-02", type = "String")
+    @NotBlank(message = "Birthday cannot be blank")
+    @Schema(name = "birthday", example = "1998-11-02", type = "String", required = true)
     private String birthday;
 }
