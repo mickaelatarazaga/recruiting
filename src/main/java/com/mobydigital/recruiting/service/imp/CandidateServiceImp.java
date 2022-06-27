@@ -2,7 +2,7 @@ package com.mobydigital.recruiting.service.imp;
 
 import com.mobydigital.recruiting.exeption.DataAlreadyExistException;
 import com.mobydigital.recruiting.exeption.NotFoundException;
-import com.mobydigital.recruiting.model.dto.CandidateRequest;
+import com.mobydigital.recruiting.model.dto.CandidateDto;
 import com.mobydigital.recruiting.model.entity.Candidate;
 import com.mobydigital.recruiting.repository.CandidateRepository;
 import com.mobydigital.recruiting.service.CandidateService;
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +26,7 @@ public class CandidateServiceImp implements CandidateService {
     private ModelMapper modelMapper;
 
     @Override
-    public String create(CandidateRequest request) throws DataAlreadyExistException {
+    public String createCandidate(CandidateDto request) throws DataAlreadyExistException {
         List<Candidate> candidateList = candidateRepository.findAll();
         if (candidateList.stream().anyMatch(candidate -> candidate.getDniNumber().equals(request.getDniNumber()))) {
             throw new DataAlreadyExistException("The Candidate DNI number " + request.getDniNumber() + " already exist");
@@ -36,7 +37,7 @@ public class CandidateServiceImp implements CandidateService {
     }
 
     @Override
-    public String delete(Long id) throws NotFoundException {
+    public String deleteCandidateById(Long id) throws NotFoundException {
         Optional<Candidate> candidate = candidateRepository.findById(id);
         if (!candidate.isPresent()) {
             throw new NotFoundException("Candidate " + id + " not found");
@@ -47,7 +48,7 @@ public class CandidateServiceImp implements CandidateService {
     }
 
     @Override
-    public String update(CandidateRequest request) throws NotFoundException, ParseException {
+    public String updateCandidateByDni(CandidateDto request) throws NotFoundException, ParseException {
         Optional<Candidate> candidate = candidateRepository.findByDniNumber(request.getDniNumber());
         if (!candidate.isPresent()) {
             throw new NotFoundException("The Candidate DNI number " + request.getDniNumber() + " not found");
@@ -60,6 +61,26 @@ public class CandidateServiceImp implements CandidateService {
         candidate.get().setBirthday(formatDate.parse(request.getBirthday()));
         candidateRepository.save(candidate.get());
         return "Successfully updated Candidate";
+    }
+
+    @Override
+    public CandidateDto getCandidateById(Long id) throws NotFoundException {
+        Optional<Candidate> candidate = candidateRepository.findById(id);
+        if (!candidate.isPresent()) {
+            throw new NotFoundException("Candidate " + id + " not found");
+        }
+        CandidateDto candidateDto = modelMapper.map(candidate.get(), CandidateDto.class);
+        return candidateDto;
+    }
+
+    @Override
+    public List<CandidateDto> getAllCandidates() {
+        List<Candidate> candidateList = candidateRepository.findAll();
+        List<CandidateDto> candidateDtoList = new ArrayList<>();
+        for (Candidate candidate : candidateList) {
+            candidateDtoList.add(modelMapper.map(candidate, CandidateDto.class));
+        }
+        return candidateDtoList;
     }
 
 }

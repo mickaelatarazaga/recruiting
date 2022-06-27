@@ -2,15 +2,20 @@ package com.mobydigital.recruiting.service;
 
 import com.mobydigital.recruiting.exeption.DataAlreadyExistException;
 import com.mobydigital.recruiting.exeption.NotFoundException;
-import com.mobydigital.recruiting.model.dto.CandidateRequest;
+import com.mobydigital.recruiting.model.dto.CandidateDto;
 
 import java.text.ParseException;
+import java.util.List;
 
 public interface CandidateService {
 
-    String create(CandidateRequest request) throws DataAlreadyExistException;
+    String createCandidate(CandidateDto request) throws DataAlreadyExistException;
 
-    String delete(Long id) throws NotFoundException;
+    String deleteCandidateById(Long id) throws NotFoundException;
 
-    String update(CandidateRequest request) throws NotFoundException, ParseException;
+    String updateCandidateByDni(CandidateDto request) throws NotFoundException, ParseException;
+
+    CandidateDto getCandidateById(Long id) throws NotFoundException;
+
+    List<CandidateDto> getAllCandidates();
 }

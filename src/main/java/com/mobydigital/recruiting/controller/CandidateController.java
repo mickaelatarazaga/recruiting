@@ -2,10 +2,12 @@ package com.mobydigital.recruiting.controller;
 
 import com.mobydigital.recruiting.exeption.DataAlreadyExistException;
 import com.mobydigital.recruiting.exeption.NotFoundException;
-import com.mobydigital.recruiting.model.dto.CandidateRequest;
+import com.mobydigital.recruiting.model.dto.CandidateDto;
+import com.mobydigital.recruiting.model.entity.Candidate;
 import com.mobydigital.recruiting.service.CandidateService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,10 +25,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.text.ParseException;
+import java.util.List;
 
 @Tag(name = "Candidates")
 @RestController
-@RequestMapping("/candidates")
+@RequestMapping("/candidate")
 public class CandidateController {
 
     @Autowired
@@ -36,9 +40,9 @@ public class CandidateController {
             @ApiResponse(responseCode = "201", description = "Successfully Saved Candidate", content = @Content),
             @ApiResponse(responseCode = "409", description = "The Candidate DNI number already exist", content = @Content)
     })
-    @PostMapping("/create")
-    public ResponseEntity<String> saveCandidate(@Valid @RequestBody CandidateRequest request) throws DataAlreadyExistException {
-        return new ResponseEntity<>(candidateService.create(request), HttpStatus.CREATED);
+    @PostMapping()
+    public ResponseEntity<String> saveCandidate(@Valid @RequestBody CandidateDto request) throws DataAlreadyExistException {
+        return new ResponseEntity<>(candidateService.createCandidate(request), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Delete Candidate by Id")
@@ -49,7 +53,7 @@ public class CandidateController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCandidate(@PathVariable Long id) throws NotFoundException {
-        return new ResponseEntity<>(candidateService.delete(id), HttpStatus.OK);
+        return new ResponseEntity<>(candidateService.deleteCandidateById(id), HttpStatus.OK);
     }
 
     @Operation(summary = "Update Candidate by Id")
@@ -57,8 +61,30 @@ public class CandidateController {
             @ApiResponse(responseCode = "201", description = "Successfully updated Candidate", content = @Content),
             @ApiResponse(responseCode = "404", description = "Candidate not found", content = @Content)
     })
-    @PutMapping("/update")
-    public ResponseEntity<String> updateCandidate(@Valid @RequestBody CandidateRequest request) throws NotFoundException, ParseException {
-        return new ResponseEntity<>(candidateService.update(request), HttpStatus.OK);
+    @PutMapping()
+    public ResponseEntity<String> updateCandidate(@Valid @RequestBody CandidateDto request) throws NotFoundException, ParseException {
+        return new ResponseEntity<>(candidateService.updateCandidateByDni(request), HttpStatus.OK);
     }
+
+    @Operation(summary = "Get Candidate by Id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully deleted Candidate", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CandidateDto.class))),
+            @ApiResponse(responseCode = "404", description = "Candidate not found", content = @Content)
+
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<CandidateDto> getCandidate(@PathVariable Long id) throws NotFoundException {
+        return new ResponseEntity<>(candidateService.getCandidateById(id), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Get All Candidates")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Candidate.class))),
+
+    })
+    @GetMapping("/all")
+    public ResponseEntity<List<CandidateDto>> getAllCandidates() {
+        return new ResponseEntity<>(candidateService.getAllCandidates(), HttpStatus.OK);
+    }
+
 }

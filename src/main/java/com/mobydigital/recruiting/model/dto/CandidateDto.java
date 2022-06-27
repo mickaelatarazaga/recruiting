@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CandidateRequest {
+public class CandidateDto {
 
     @NotBlank(message = "First Name cannot be blank")
     @Schema(name = "firstName", example = "Mariana", type = "String", required = true)
