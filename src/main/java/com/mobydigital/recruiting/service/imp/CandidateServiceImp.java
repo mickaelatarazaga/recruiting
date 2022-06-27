@@ -1,6 +1,7 @@
 package com.mobydigital.recruiting.service.imp;
 
 import com.mobydigital.recruiting.exeption.DataAlreadyExistException;
+import com.mobydigital.recruiting.exeption.NotFoundException;
 import com.mobydigital.recruiting.model.dto.CandidateRequest;
 import com.mobydigital.recruiting.model.entity.Candidate;
 import com.mobydigital.recruiting.repository.CandidateRepository;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CandidateServiceImp implements CandidateService {
@@ -30,4 +32,16 @@ public class CandidateServiceImp implements CandidateService {
         candidateRepository.save(candidate);
         return "Successfully Saved Candidate";
     }
+
+    @Override
+    public String delete(Long id) throws NotFoundException {
+        Optional<Candidate> candidate = candidateRepository.findById(id);
+        if (!candidate.isPresent()) {
+            throw new NotFoundException("Candidate " + id + " not found");
+        }
+        candidate.get().setDeleted(true);
+        candidateRepository.save(candidate.get());
+        return "Successfully deleted Candidate";
+    }
+
 }

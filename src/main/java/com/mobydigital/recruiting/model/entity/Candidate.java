@@ -50,6 +50,6 @@ public class Candidate {
     private String dniNumber;
 
     @NotEmpty(message = "Birthday cannot be blank")
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date birthday;
 }
