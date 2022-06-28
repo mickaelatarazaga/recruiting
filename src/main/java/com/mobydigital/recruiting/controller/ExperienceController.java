@@ -58,6 +58,8 @@ public class ExperienceController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Successfully updated Experience", content = @Content),
             @ApiResponse(responseCode = "404", description = "Experience not found", content = @Content)
+            @ApiResponse(responseCode = "404", description = "Candiate ID not found", content = @Content)
+            @ApiResponse(responseCode = "404", description = "Technology ID not found", content = @Content)
     })
     @PutMapping("/{id}")
     public ResponseEntity<String> updateTechnology(@PathVariable Long id, @RequestBody ExperienceDto request) throws NotFoundException {
@@ -89,7 +91,7 @@ public class ExperienceController {
     @Operation(summary = "Get All Experiences by Candidate Id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")),
-
+            @ApiResponse(responseCode = "404", description = "Candidate Id not found", content = @Content)
     })
     @GetMapping("/{id}/all")
     public ResponseEntity<List<ExperienceDto>> getAllExperiencesByCandidate(@PathVariable Long id) throws NotFoundException {

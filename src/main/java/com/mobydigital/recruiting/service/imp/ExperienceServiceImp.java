@@ -67,10 +67,10 @@ public class ExperienceServiceImp implements ExperienceService {
         Optional<Candidate> candidate = candidateRepository.findById(request.getCandidateId());
         Optional<Technology> technology = technologyRepository.findById(request.getTechnologyId());
         if (!candidate.isPresent()) {
-            throw new NotFoundException("Candidate ID not found");
+            throw new NotFoundException("Candidate ID " + request.getCandidateId() + " not found");
         }
         if (!technology.isPresent()) {
-            throw new NotFoundException("Technology ID not found");
+            throw new NotFoundException("Technology ID " + request.getTechnologyId() + " not found");
         }
         Experience experienceToSaved = Experience.builder()
                 .candidate(candidate.get())
