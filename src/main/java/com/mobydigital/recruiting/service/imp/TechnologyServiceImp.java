@@ -73,4 +73,13 @@ public class TechnologyServiceImp implements TechnologyService {
         TechnologyDto technologyDto = modelMapper.map(technology.get(), TechnologyDto.class);
         return technologyDto;
     }
+
+    @Override
+    public Technology returnTechnologyById(Long id) throws NotFoundException {
+        Optional<Technology> technology = technologyRepository.findById(id);
+        if (!technology.isPresent()) {
+            throw new NotFoundException("Technology " + id + " not found");
+        }
+        return technology.get();
+    }
 }

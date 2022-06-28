@@ -74,6 +74,15 @@ public class CandidateServiceImp implements CandidateService {
     }
 
     @Override
+    public Candidate returnCandidateById(Long id) throws NotFoundException {
+        Optional<Candidate> candidate = candidateRepository.findById(id);
+        if (!candidate.isPresent()) {
+            throw new NotFoundException("Candidate " + id + " not found");
+        }
+        return candidate.get();
+    }
+
+    @Override
     public List<CandidateDto> getAllCandidates() {
         List<Candidate> candidateList = candidateRepository.findAll();
         List<CandidateDto> candidateDtoList = new ArrayList<>();

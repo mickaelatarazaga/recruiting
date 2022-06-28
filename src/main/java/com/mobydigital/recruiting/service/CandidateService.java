@@ -3,6 +3,7 @@ package com.mobydigital.recruiting.service;
 import com.mobydigital.recruiting.exeption.DataAlreadyExistException;
 import com.mobydigital.recruiting.exeption.NotFoundException;
 import com.mobydigital.recruiting.model.dto.CandidateDto;
+import com.mobydigital.recruiting.model.entity.Candidate;
 
 import java.text.ParseException;
 import java.util.List;
@@ -16,6 +17,8 @@ public interface CandidateService {
     String updateCandidateByDni(Long id, CandidateDto request) throws NotFoundException, ParseException;
 
     CandidateDto getCandidateById(Long id) throws NotFoundException;
+
+    Candidate returnCandidateById(Long id) throws NotFoundException;
 
     List<CandidateDto> getAllCandidates();
 }

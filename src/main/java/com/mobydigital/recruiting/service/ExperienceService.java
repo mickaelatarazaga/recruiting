@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ExperienceService {
 
-    String createExperience(ExperienceDto request) throws DataAlreadyExistException;
+    String createExperience(ExperienceDto request) throws DataAlreadyExistException, NotFoundException;
 
     String deleteExperienceById(Long id) throws NotFoundException;
 

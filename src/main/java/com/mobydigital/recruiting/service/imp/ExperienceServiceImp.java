@@ -6,10 +6,10 @@ import com.mobydigital.recruiting.model.dto.ExperienceDto;
 import com.mobydigital.recruiting.model.entity.Candidate;
 import com.mobydigital.recruiting.model.entity.Experience;
 import com.mobydigital.recruiting.model.entity.Technology;
-import com.mobydigital.recruiting.repository.CandidateRepository;
 import com.mobydigital.recruiting.repository.ExperienceRepository;
-import com.mobydigital.recruiting.repository.TechnologyRepository;
+import com.mobydigital.recruiting.service.CandidateService;
 import com.mobydigital.recruiting.service.ExperienceService;
+import com.mobydigital.recruiting.service.TechnologyService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,21 +26,21 @@ public class ExperienceServiceImp implements ExperienceService {
     @Autowired
     private ModelMapper modelMapper;
     @Autowired
-    private CandidateRepository candidateRepository;
+    private CandidateService candidateService;
     @Autowired
-    private TechnologyRepository technologyRepository;
+    private TechnologyService technologyService;
 
     @Override
-    public String createExperience(ExperienceDto request) throws DataAlreadyExistException {
+    public String createExperience(ExperienceDto request) throws DataAlreadyExistException, NotFoundException {
         if (experienceRepository.findByCandidateIdAndTechnologyId(request.getCandidateId(), request.getTechnologyId()) != null) {
             throw new DataAlreadyExistException("This Experience already exist");
         }
-        Optional<Candidate> candidate = candidateRepository.findById(request.getCandidateId());
-        Optional<Technology> technology = technologyRepository.findById(request.getTechnologyId());
+        Candidate candidate = candidateService.returnCandidateById(request.getCandidateId());
+        Technology technology = technologyService.returnTechnologyById(request.getTechnologyId());
 
         Experience experience = Experience.builder()
-                .candidate(candidate.get())
-                .technology(technology.get())
+                .candidate(candidate)
+                .technology(technology)
                 .yearsExperience(request.getYearsExperience())
                 .build();
         experienceRepository.save(experience);
@@ -64,17 +64,12 @@ public class ExperienceServiceImp implements ExperienceService {
         if (!experience.isPresent()) {
             throw new NotFoundException("Experience not found");
         }
-        Optional<Candidate> candidate = candidateRepository.findById(request.getCandidateId());
-        Optional<Technology> technology = technologyRepository.findById(request.getTechnologyId());
-        if (!candidate.isPresent()) {
-            throw new NotFoundException("Candidate ID " + request.getCandidateId() + " not found");
-        }
-        if (!technology.isPresent()) {
-            throw new NotFoundException("Technology ID " + request.getTechnologyId() + " not found");
-        }
+        Candidate candidate = candidateService.returnCandidateById(request.getCandidateId());
+        Technology technology = technologyService.returnTechnologyById(request.getTechnologyId());
+
         Experience experienceToSaved = Experience.builder()
-                .candidate(candidate.get())
-                .technology(technology.get())
+                .candidate(candidate)
+                .technology(technology)
                 .yearsExperience(request.getYearsExperience())
                 .build();
         experienceRepository.save(experienceToSaved);
@@ -103,10 +98,7 @@ public class ExperienceServiceImp implements ExperienceService {
 
     @Override
     public List<ExperienceDto> getAllExperiencesByCandidate(Long id) throws NotFoundException {
-        Optional<Candidate> candidate = candidateRepository.findById(id);
-        if (!candidate.isPresent()) {
-            throw new NotFoundException("Candidate not found");
-        }
+        Candidate candidate = candidateService.returnCandidateById(id);
         List<Experience> experienceList = experienceRepository.findAllByCandidateId(id);
         List<ExperienceDto> experienceDtoList = new ArrayList<>();
         for (Experience experience : experienceList) {
