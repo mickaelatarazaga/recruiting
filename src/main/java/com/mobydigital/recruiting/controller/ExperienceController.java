@@ -57,8 +57,8 @@ public class ExperienceController {
     @Operation(summary = "Update Experience by Id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Successfully updated Experience", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Experience not found", content = @Content)
-            @ApiResponse(responseCode = "404", description = "Candiate ID not found", content = @Content)
+            @ApiResponse(responseCode = "404", description = "Experience not found", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Candiate ID not found", content = @Content),
             @ApiResponse(responseCode = "404", description = "Technology ID not found", content = @Content)
     })
     @PutMapping("/{id}")
