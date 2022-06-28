@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,5 +48,15 @@ public class ExperienceController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteExperience(@PathVariable Long id) throws NotFoundException {
         return new ResponseEntity<>(experienceService.deleteExperienceById(id), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Update Experience by Id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Successfully updated Experience", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Experience not found", content = @Content)
+    })
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateTechnology(@PathVariable Long id, @RequestBody ExperienceDto request) throws NotFoundException {
+        return new ResponseEntity<>(experienceService.updateExperience(id, request), HttpStatus.OK);
     }
 }

@@ -55,4 +55,23 @@ public class ExperienceServiceImp implements ExperienceService {
         experienceRepository.delete(experience.get());
         return "Successfully deleted Technology";
     }
+
+    @Override
+    public String updateExperience(Long id, ExperienceDto request) throws NotFoundException {
+        Optional<Experience> experience = experienceRepository.findById(id);
+        if (!experience.isPresent()) {
+            throw new NotFoundException("Experience not found");
+        }
+        Optional<Candidate> candidate = candidateRepository.findById(request.getCandidateId());
+        Optional<Technology> technology = technologyRepository.findById(request.getTechnologyId());
+
+        Experience experienceSaved = Experience.builder()
+                .candidate(candidate.get())
+                .technology(technology.get())
+                .yearsExperience(request.getYearsExperience())
+                .build();
+        experienceRepository.save(experienceSaved);
+
+        return "Successfully Updated Experience";
+    }
 }

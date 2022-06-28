@@ -9,4 +9,6 @@ public interface ExperienceService {
     String createExperience(ExperienceDto request) throws DataAlreadyExistException;
 
     String deleteExperienceById(Long id) throws NotFoundException;
+
+    String updateExperience(Long id, ExperienceDto request) throws NotFoundException;
 }
