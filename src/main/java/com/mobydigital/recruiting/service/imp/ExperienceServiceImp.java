@@ -1,6 +1,7 @@
 package com.mobydigital.recruiting.service.imp;
 
 import com.mobydigital.recruiting.exeption.DataAlreadyExistException;
+import com.mobydigital.recruiting.exeption.NotFoundException;
 import com.mobydigital.recruiting.model.dto.ExperienceDto;
 import com.mobydigital.recruiting.model.entity.Candidate;
 import com.mobydigital.recruiting.model.entity.Experience;
@@ -43,5 +44,15 @@ public class ExperienceServiceImp implements ExperienceService {
         experienceRepository.save(experience);
 
         return "Successfully Saved Experience";
+    }
+
+    @Override
+    public String deleteExperienceById(Long id) throws NotFoundException {
+        Optional<Experience> experience = experienceRepository.findById(id);
+        if (!experience.isPresent()) {
+            throw new NotFoundException("Experience " + id + " not found");
+        }
+        experienceRepository.delete(experience.get());
+        return "Successfully deleted Technology";
     }
 }
