@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,5 +52,25 @@ public class TechnologyServiceImp implements TechnologyService {
         technology.get().setVersion(request.getVersion());
         technologyRepository.save(technology.get());
         return "Successfully updated Technology";
+    }
+
+    @Override
+    public List<TechnologyDto> getAllTechnologies() {
+        List<Technology> technologyList = technologyRepository.findAll();
+        List<TechnologyDto> technologyDtoList = new ArrayList<>();
+        for (Technology technology : technologyList) {
+            technologyDtoList.add(modelMapper.map(technology, TechnologyDto.class));
+        }
+        return technologyDtoList;
+    }
+
+    @Override
+    public TechnologyDto getTechnologyById(Long id) throws NotFoundException {
+        Optional<Technology> technology = technologyRepository.findById(id);
+        if (!technology.isPresent()) {
+            throw new NotFoundException("Technology " + id + " not found");
+        }
+        TechnologyDto technologyDto = modelMapper.map(technology.get(), TechnologyDto.class);
+        return technologyDto;
     }
 }
