@@ -48,8 +48,8 @@ public class CandidateServiceImp implements CandidateService {
     }
 
     @Override
-    public String updateCandidateByDni(CandidateDto request) throws NotFoundException, ParseException {
-        Optional<Candidate> candidate = candidateRepository.findByDniNumber(request.getDniNumber());
+    public String updateCandidateByDni(Long id, CandidateDto request) throws NotFoundException, ParseException {
+        Optional<Candidate> candidate = candidateRepository.findById(id);
         if (!candidate.isPresent()) {
             throw new NotFoundException("The Candidate DNI number " + request.getDniNumber() + " not found");
         }

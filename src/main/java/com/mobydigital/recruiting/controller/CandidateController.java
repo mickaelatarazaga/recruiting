@@ -61,9 +61,9 @@ public class CandidateController {
             @ApiResponse(responseCode = "201", description = "Successfully updated Candidate", content = @Content),
             @ApiResponse(responseCode = "404", description = "Candidate not found", content = @Content)
     })
-    @PutMapping()
-    public ResponseEntity<String> updateCandidate(@Valid @RequestBody CandidateDto request) throws NotFoundException, ParseException {
-        return new ResponseEntity<>(candidateService.updateCandidateByDni(request), HttpStatus.OK);
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateCandidate(@PathVariable Long id, @Valid @RequestBody CandidateDto request) throws NotFoundException, ParseException {
+        return new ResponseEntity<>(candidateService.updateCandidateByDni(id, request), HttpStatus.OK);
     }
 
     @Operation(summary = "Get Candidate by Id")

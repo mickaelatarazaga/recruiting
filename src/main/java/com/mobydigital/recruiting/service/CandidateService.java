@@ -13,7 +13,7 @@ public interface CandidateService {
 
     String deleteCandidateById(Long id) throws NotFoundException;
 
-    String updateCandidateByDni(CandidateDto request) throws NotFoundException, ParseException;
+    String updateCandidateByDni(Long id, CandidateDto request) throws NotFoundException, ParseException;
 
     CandidateDto getCandidateById(Long id) throws NotFoundException;
 
