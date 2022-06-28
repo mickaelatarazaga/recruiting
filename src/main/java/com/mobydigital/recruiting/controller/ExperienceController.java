@@ -39,7 +39,7 @@ public class ExperienceController {
             @ApiResponse(responseCode = "409", description = "This Experience already exist", content = @Content)
     })
     @PostMapping()
-    public ResponseEntity<String> saveExperience(@Valid @RequestBody ExperienceDto request) throws DataAlreadyExistException {
+    public ResponseEntity<String> saveExperience(@Valid @RequestBody ExperienceDto request) throws DataAlreadyExistException, NotFoundException {
         return new ResponseEntity<>(experienceService.createExperience(request), HttpStatus.CREATED);
     }
 
