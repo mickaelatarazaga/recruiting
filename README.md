@@ -22,7 +22,7 @@ _Se trata de una API para gestionar Candidatos._
 * Descargar el proyecto o clonarlo
 * Abra la consola y vaya a la carpeta del proyecto.
 * Ejecute estos comandos: `mvn clean install ` y luego ` mvn spring-boot:run `.
-* Abra su navegador e ingrese a `http://localhost:8080/swagger-ui.html`.
+* Abra su navegador e ingrese a `http://localhost:8080/swagger-ui/index.html#/`.
 * Puede ver la documentación de la API e interactuar con los Endpoints.
 
 ### Base de Datos
