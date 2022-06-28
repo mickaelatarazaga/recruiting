@@ -14,6 +14,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -73,5 +75,39 @@ public class ExperienceServiceImp implements ExperienceService {
         experienceRepository.save(experienceSaved);
 
         return "Successfully Updated Experience";
+    }
+
+    @Override
+    public ExperienceDto getExperienceById(Long id) throws NotFoundException {
+        Optional<Experience> experience = experienceRepository.findById(id);
+        if (!experience.isPresent()) {
+            throw new NotFoundException("Experience " + id + " not found");
+        }
+        ExperienceDto experienceDto = modelMapper.map(experience.get(), ExperienceDto.class);
+        return experienceDto;
+    }
+
+    @Override
+    public List<ExperienceDto> getAllExperiences() {
+        List<Experience> experienceList = experienceRepository.findAll();
+        List<ExperienceDto> experienceDtoList = new ArrayList<>();
+        for (Experience experience : experienceList) {
+            experienceDtoList.add(modelMapper.map(experience, ExperienceDto.class));
+        }
+        return experienceDtoList;
+    }
+
+    @Override
+    public List<ExperienceDto> getAllExperiencesByCandidate(Long id) throws NotFoundException {
+        Optional<Candidate> candidate = candidateRepository.findById(id);
+        if (!candidate.isPresent()) {
+            throw new NotFoundException("Candidate not found");
+        }
+        List<Experience> experienceList = experienceRepository.findAllByCandidateId(id);
+        List<ExperienceDto> experienceDtoList = new ArrayList<>();
+        for (Experience experience : experienceList) {
+            experienceDtoList.add(modelMapper.map(experience, ExperienceDto.class));
+        }
+        return experienceDtoList;
     }
 }
