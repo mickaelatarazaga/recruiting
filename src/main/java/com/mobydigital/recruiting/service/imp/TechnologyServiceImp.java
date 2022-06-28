@@ -2,7 +2,7 @@ package com.mobydigital.recruiting.service.imp;
 
 import com.mobydigital.recruiting.exeption.DataAlreadyExistException;
 import com.mobydigital.recruiting.exeption.NotFoundException;
-import com.mobydigital.recruiting.model.dto.TechnologyRequest;
+import com.mobydigital.recruiting.model.dto.TechnologyDto;
 import com.mobydigital.recruiting.model.entity.Technology;
 import com.mobydigital.recruiting.repository.TechnologyRepository;
 import com.mobydigital.recruiting.service.TechnologyService;
@@ -21,9 +21,9 @@ public class TechnologyServiceImp implements TechnologyService {
     private ModelMapper modelMapper;
 
     @Override
-    public String createTechnology(TechnologyRequest request) throws DataAlreadyExistException {
+    public String createTechnology(TechnologyDto request) throws DataAlreadyExistException {
         List<Technology> technologyList = technologyRepository.findAll();
-        if (technologyList.stream().anyMatch(candidate -> candidate.getName().equals(request.getName()) && candidate.getVersion().equals(request.getVersion()))) {
+        if (technologyList.stream().anyMatch(technology -> technology.getName().equals(request.getName()) && technology.getVersion().equals(request.getVersion()))) {
             throw new DataAlreadyExistException("This Technology already exist");
         }
         Technology technology = modelMapper.map(request, Technology.class);
@@ -39,5 +39,17 @@ public class TechnologyServiceImp implements TechnologyService {
         }
         technologyRepository.delete(technology.get());
         return "Successfully deleted Technology";
+    }
+
+    @Override
+    public String updateTechnology(Long id, TechnologyDto request) throws NotFoundException {
+        Optional<Technology> technology = technologyRepository.findById(id);
+        if (!technology.isPresent()) {
+            throw new NotFoundException("Technology not found");
+        }
+        technology.get().setName(request.getName());
+        technology.get().setVersion(request.getVersion());
+        technologyRepository.save(technology.get());
+        return "Successfully updated Technology";
     }
 }

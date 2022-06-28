@@ -2,24 +2,27 @@ package com.mobydigital.recruiting.controller;
 
 import com.mobydigital.recruiting.exeption.DataAlreadyExistException;
 import com.mobydigital.recruiting.exeption.NotFoundException;
-import com.mobydigital.recruiting.model.dto.TechnologyRequest;
+import com.mobydigital.recruiting.model.dto.TechnologyDto;
 import com.mobydigital.recruiting.service.TechnologyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+@Tag(name = "Technologies")
 @RestController
 @RequestMapping("/technology")
 public class TechnologyController {
@@ -32,7 +35,7 @@ public class TechnologyController {
             @ApiResponse(responseCode = "409", description = "This Technology already exist", content = @Content)
     })
     @PostMapping()
-    public ResponseEntity<String> saveTechnology(@Valid @RequestBody TechnologyRequest request) throws DataAlreadyExistException {
+    public ResponseEntity<String> saveTechnology(@Valid @RequestBody TechnologyDto request) throws DataAlreadyExistException {
         return new ResponseEntity<>(technologyService.createTechnology(request), HttpStatus.CREATED);
     }
 
@@ -47,5 +50,14 @@ public class TechnologyController {
         return new ResponseEntity<>(technologyService.deleteTechnologyById(id), HttpStatus.OK);
     }
 
+    @Operation(summary = "Update Technology by Id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Successfully updated Technology", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Technology not found", content = @Content)
+    })
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateTechnology(@PathVariable Long id, @RequestBody TechnologyDto request) throws NotFoundException {
+        return new ResponseEntity<>(technologyService.updateTechnology(id, request), HttpStatus.OK);
+    }
 
 }
