@@ -1,4 +1,4 @@
-package com.mobydigital.recruiting.exeption;
+package com.mobydigital.recruiting.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

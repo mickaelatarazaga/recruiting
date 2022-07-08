@@ -1,7 +1,7 @@
 package com.mobydigital.recruiting.service;
 
-import com.mobydigital.recruiting.exeption.DataAlreadyExistException;
-import com.mobydigital.recruiting.exeption.NotFoundException;
+import com.mobydigital.recruiting.exception.DataAlreadyExistException;
+import com.mobydigital.recruiting.exception.NotFoundException;
 import com.mobydigital.recruiting.model.dto.TechnologyDto;
 import com.mobydigital.recruiting.model.entity.Technology;
 
