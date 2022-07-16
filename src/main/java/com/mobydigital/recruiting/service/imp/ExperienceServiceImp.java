@@ -117,10 +117,10 @@ public class ExperienceServiceImp implements ExperienceService {
         log.info("All experiences will be searched");
         List<Experience> experienceList = experienceRepository.findAll();
         List<ExperienceDto> experienceDtoList = new ArrayList<>();
-        for (Experience experience : experienceList) {
+        experienceList.forEach(experience -> {
             log.info("The experience id: " + experience.getId() + " is being added to the list");
             experienceDtoList.add(modelMapper.map(experience, ExperienceDto.class));
-        }
+        });
         log.info("Experiences searched successfully");
         return experienceDtoList;
     }
@@ -130,10 +130,10 @@ public class ExperienceServiceImp implements ExperienceService {
         log.info("All experiences by candidate id: " + id + " will be searched");
         List<Experience> experienceList = experienceRepository.findAllByCandidateId(id);
         List<ExperienceDto> experienceDtoList = new ArrayList<>();
-        for (Experience experience : experienceList) {
+        experienceList.forEach(experience -> {
             log.info("The Candidate experience id: " + id + " is being added to the list");
             experienceDtoList.add(modelMapper.map(experience, ExperienceDto.class));
-        }
+        });
         log.info("Experiences searched successfully");
         return experienceDtoList;
     }

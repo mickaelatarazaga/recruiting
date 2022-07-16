@@ -125,10 +125,10 @@ public class CandidateServiceImp implements CandidateService {
         log.info("All candidates will be searched");
         List<Candidate> candidateList = candidateRepository.findAll();
         List<CandidateDto> candidateDtoList = new ArrayList<>();
-        for (Candidate candidate : candidateList) {
+        candidateList.forEach(candidate -> {
             log.info("The candidate id: " + candidate.getId() + " is being added to the list");
             candidateDtoList.add(modelMapper.map(candidate, CandidateDto.class));
-        }
+        });
         log.info("Candidates searched successfully");
         return candidateDtoList;
     }

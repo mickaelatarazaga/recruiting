@@ -81,10 +81,10 @@ public class TechnologyServiceImp implements TechnologyService {
         log.info("All Technologies will be searched");
         List<Technology> technologyList = technologyRepository.findAll();
         List<TechnologyDto> technologyDtoList = new ArrayList<>();
-        for (Technology technology : technologyList) {
+        technologyList.forEach(technology -> {
             log.info("Technology id: " + technology.getId() + " is being added to the list");
             technologyDtoList.add(modelMapper.map(technology, TechnologyDto.class));
-        }
+        });
         log.info("Technologies searched successfully");
         return technologyDtoList;
     }
