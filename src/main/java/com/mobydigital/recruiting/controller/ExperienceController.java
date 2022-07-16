@@ -1,7 +1,5 @@
 package com.mobydigital.recruiting.controller;
 
-import com.mobydigital.recruiting.exception.DataAlreadyExistException;
-import com.mobydigital.recruiting.exception.NotFoundException;
 import com.mobydigital.recruiting.model.dto.ExperienceDto;
 import com.mobydigital.recruiting.model.dto.TechnologyDto;
 import com.mobydigital.recruiting.service.ExperienceService;
@@ -14,7 +12,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -32,7 +37,7 @@ public class ExperienceController {
             @ApiResponse(responseCode = "409", description = "This Experience already exist", content = @Content)
     })
     @PostMapping()
-    public ResponseEntity<String> saveExperience(@Valid @RequestBody ExperienceDto request) throws DataAlreadyExistException, NotFoundException {
+    public ResponseEntity<String> saveExperience(@Valid @RequestBody ExperienceDto request) {
         return new ResponseEntity<>(experienceService.createExperience(request), HttpStatus.CREATED);
     }
 
@@ -43,7 +48,7 @@ public class ExperienceController {
 
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteExperience(@PathVariable Long id) throws NotFoundException {
+    public ResponseEntity<String> deleteExperience(@PathVariable Long id) {
         return new ResponseEntity<>(experienceService.deleteExperienceById(id), HttpStatus.OK);
     }
 
@@ -55,7 +60,7 @@ public class ExperienceController {
             @ApiResponse(responseCode = "404", description = "Technology ID not found", content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateTechnology(@PathVariable Long id, @RequestBody ExperienceDto request) throws NotFoundException {
+    public ResponseEntity<String> updateTechnology(@PathVariable Long id, @RequestBody ExperienceDto request) {
         return new ResponseEntity<>(experienceService.updateExperience(id, request), HttpStatus.OK);
     }
 
@@ -67,7 +72,7 @@ public class ExperienceController {
 
     })
     @GetMapping("/{id}")
-    public ResponseEntity<ExperienceDto> getExperienceById(@PathVariable Long id) throws NotFoundException {
+    public ResponseEntity<ExperienceDto> getExperienceById(@PathVariable Long id) {
         return new ResponseEntity<>(experienceService.getExperienceById(id), HttpStatus.OK);
     }
 
@@ -87,7 +92,7 @@ public class ExperienceController {
             @ApiResponse(responseCode = "404", description = "Candidate Id not found", content = @Content)
     })
     @GetMapping("/{id}/all")
-    public ResponseEntity<List<ExperienceDto>> getAllExperiencesByCandidate(@PathVariable Long id) throws NotFoundException {
+    public ResponseEntity<List<ExperienceDto>> getAllExperiencesByCandidate(@PathVariable Long id) {
         return new ResponseEntity<>(experienceService.getAllExperiencesByCandidate(id), HttpStatus.OK);
     }
 }

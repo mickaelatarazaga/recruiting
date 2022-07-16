@@ -30,12 +30,14 @@ public class CandidateServiceImp implements CandidateService {
     @Override
     public void createCandidate(CandidateDto request) {
         try {
-            log.info("Candidate will be saved in the Data Base");
+            log.info("Candidate will be created");
+
             List<Candidate> candidateList = candidateRepository.findAll();
             if (candidateList.stream().anyMatch(candidate -> candidate.getDniNumber().equals(request.getDniNumber()))) {
                 throw new DataAlreadyExistException("The Candidate DNI number " + request.getDniNumber() + " already exist");
             }
             Candidate candidate = modelMapper.map(request, Candidate.class);
+            log.info("Candidate will be saved in the Data Base");
             candidateRepository.save(candidate);
             log.info("Successfully Saved Candidate");
         } catch (DataAlreadyExistException e) {
