@@ -37,8 +37,9 @@ public class ExperienceController {
             @ApiResponse(responseCode = "409", description = "This Experience already exist", content = @Content)
     })
     @PostMapping()
-    public ResponseEntity<String> saveExperience(@Valid @RequestBody ExperienceDto request) {
-        return new ResponseEntity<>(experienceService.createExperience(request), HttpStatus.CREATED);
+    public ResponseEntity<HttpStatus> saveExperience(@Valid @RequestBody ExperienceDto request) {
+        experienceService.createExperience(request);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Operation(summary = "Delete Experience by Id")
@@ -48,8 +49,9 @@ public class ExperienceController {
 
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteExperience(@PathVariable Long id) {
-        return new ResponseEntity<>(experienceService.deleteExperienceById(id), HttpStatus.OK);
+    public ResponseEntity<HttpStatus> deleteExperience(@PathVariable Long id) {
+        experienceService.deleteExperienceById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Operation(summary = "Update Experience by Id")
@@ -60,8 +62,9 @@ public class ExperienceController {
             @ApiResponse(responseCode = "404", description = "Technology ID not found", content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateTechnology(@PathVariable Long id, @RequestBody ExperienceDto request) {
-        return new ResponseEntity<>(experienceService.updateExperience(id, request), HttpStatus.OK);
+    public ResponseEntity<HttpStatus> updateTechnology(@PathVariable Long id, @RequestBody ExperienceDto request) {
+        experienceService.updateExperience(id, request);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

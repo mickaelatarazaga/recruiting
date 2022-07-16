@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface ExperienceService {
 
-    String createExperience(ExperienceDto request);
+    void createExperience(ExperienceDto request);
 
-    String deleteExperienceById(Long id);
+    void deleteExperienceById(Long id);
 
-    String updateExperience(Long id, ExperienceDto request);
+    void updateExperience(Long id, ExperienceDto request);
 
     ExperienceDto getExperienceById(Long id);
 
