@@ -37,7 +37,7 @@ public class TechnologyServiceImp implements TechnologyService {
             log.info("Successfully Saved Technology");
         } catch (DataAlreadyExistException e) {
             log.error("This Technology already exist", e);
-            throw new RuntimeException(e.getMessage());
+
         }
     }
 
@@ -53,7 +53,6 @@ public class TechnologyServiceImp implements TechnologyService {
             technologyRepository.delete(technology.get());
         } catch (NotFoundException e) {
             log.error("Technology " + id + " not found", e);
-            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -72,7 +71,6 @@ public class TechnologyServiceImp implements TechnologyService {
             log.info("Successfully updated Technology");
         } catch (NotFoundException e) {
             log.error("Technology id: " + id + " not found", e);
-            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -91,33 +89,35 @@ public class TechnologyServiceImp implements TechnologyService {
 
     @Override
     public TechnologyDto getTechnologyById(Long id) {
+
+        log.info("Technology id: " + id + " will be searched");
+        Optional<Technology> technology = technologyRepository.findById(id);
         try {
-            log.info("Technology id: " + id + " will be searched");
-            Optional<Technology> technology = technologyRepository.findById(id);
             if (technology.isEmpty()) {
                 throw new NotFoundException("Technology " + id + " not found");
             }
-            log.info("Technology searched successfully");
-            return modelMapper.map(technology.get(), TechnologyDto.class);
         } catch (NotFoundException e) {
             log.error("Technology " + id + " not found", e);
-            throw new RuntimeException(e.getMessage());
         }
+        log.info("Technology searched successfully");
+        return modelMapper.map(technology.get(), TechnologyDto.class);
+
     }
 
     @Override
     public Technology returnTechnologyById(Long id) {
+
+        log.info("Technology id: " + id + " will be searched");
+        Optional<Technology> technology = technologyRepository.findById(id);
         try {
-            log.info("Technology id: " + id + " will be searched");
-            Optional<Technology> technology = technologyRepository.findById(id);
             if (technology.isEmpty()) {
                 throw new NotFoundException("Technology " + id + " not found");
             }
-            log.info("Technology searched successfully");
-            return technology.get();
         } catch (NotFoundException e) {
             log.error("Technology " + id + " not found", e);
-            throw new RuntimeException(e.getMessage());
         }
+        log.info("Technology searched successfully");
+        return technology.get();
+
     }
 }

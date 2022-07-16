@@ -52,7 +52,6 @@ public class ExperienceServiceImp implements ExperienceService {
             log.info("Successfully Saved Experience");
         } catch (DataAlreadyExistException e) {
             log.error("This Experience already exist", e);
-            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -68,7 +67,6 @@ public class ExperienceServiceImp implements ExperienceService {
             experienceRepository.delete(experience.get());
         } catch (NotFoundException e) {
             log.error("Experience " + id + " not found", e);
-            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -92,24 +90,23 @@ public class ExperienceServiceImp implements ExperienceService {
             log.info("Successfully Updated Experience");
         } catch (NotFoundException e) {
             log.error("Experience id: " + id + " not found", e);
-            throw new RuntimeException(e.getMessage());
         }
     }
 
     @Override
     public ExperienceDto getExperienceById(Long id) {
+
+        log.info("The experience id: " + id + " will be searched");
+        Optional<Experience> experience = experienceRepository.findById(id);
         try {
-            log.info("The experience id: " + id + " will be searched");
-            Optional<Experience> experience = experienceRepository.findById(id);
             if (experience.isEmpty()) {
                 throw new NotFoundException("Experience " + id + " not found");
             }
-            log.info("Experience searched successfully");
-            return modelMapper.map(experience.get(), ExperienceDto.class);
         } catch (NotFoundException e) {
             log.error("The experience id: " + id + " will be searched", e);
-            throw new RuntimeException(e);
         }
+        log.info("Experience searched successfully");
+        return modelMapper.map(experience.get(), ExperienceDto.class);
     }
 
     @Override

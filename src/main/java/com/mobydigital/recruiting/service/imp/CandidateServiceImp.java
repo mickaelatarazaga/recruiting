@@ -42,7 +42,6 @@ public class CandidateServiceImp implements CandidateService {
             log.info("Successfully Saved Candidate");
         } catch (DataAlreadyExistException e) {
             log.error("DNI: " + request.getDniNumber() + " already exist", e);
-            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -59,7 +58,6 @@ public class CandidateServiceImp implements CandidateService {
             log.info("Successfully deleted Candidate");
         } catch (NotFoundException e) {
             log.error("Candidate " + id + " not found", e);
-            throw new RuntimeException(e);
         }
     }
 
@@ -81,43 +79,43 @@ public class CandidateServiceImp implements CandidateService {
             log.info("Successfully updated Candidate");
         } catch (NotFoundException e) {
             log.error("Candidate ID number " + id + " not found", e);
-            throw new RuntimeException(e.getMessage());
         } catch (ParseException e) {
             log.error("Error formatting the date", e.getMessage());
-            throw new RuntimeException(e.getMessage());
         }
     }
 
     @Override
     public CandidateDto getCandidateById(Long id) {
+
+        log.info("The candidate id: " + id + " will be searched");
+        Optional<Candidate> candidate = candidateRepository.findById(id);
         try {
-            log.info("The candidate id: " + id + " will be searched");
-            Optional<Candidate> candidate = candidateRepository.findById(id);
             if (candidate.isEmpty()) {
                 throw new NotFoundException("Candidate " + id + " not found");
             }
-            log.info("Candidate searched successfully");
-            return modelMapper.map(candidate.get(), CandidateDto.class);
         } catch (NotFoundException e) {
             log.error("Candidate " + id + " not found", e);
-            throw new RuntimeException(e.getMessage());
         }
+        log.info("Candidate searched successfully");
+        return modelMapper.map(candidate.get(), CandidateDto.class);
+
     }
 
     @Override
     public Candidate returnCandidateById(Long id) {
         log.info("The candidate id: " + id + " will be searched");
+
+        Optional<Candidate> candidate = candidateRepository.findById(id);
         try {
-            Optional<Candidate> candidate = candidateRepository.findById(id);
             if (candidate.isEmpty()) {
                 throw new NotFoundException("Candidate " + id + " not found");
             }
-            log.info("Candidate searched successfully");
-            return candidate.get();
         } catch (NotFoundException e) {
             log.error("Candidate " + id + " not found", e);
-            throw new RuntimeException(e);
         }
+        log.info("Candidate searched successfully");
+        return candidate.get();
+
     }
 
     @Override
