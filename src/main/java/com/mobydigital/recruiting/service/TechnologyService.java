@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface TechnologyService {
 
-    String createTechnology(TechnologyDto request);
+    void createTechnology(TechnologyDto request);
 
-    String deleteTechnologyById(Long id);
+    void deleteTechnologyById(Long id);
 
-    String updateTechnology(Long id, TechnologyDto request);
+    void updateTechnology(Long id, TechnologyDto request);
 
     List<TechnologyDto> getAllTechnologies();
 

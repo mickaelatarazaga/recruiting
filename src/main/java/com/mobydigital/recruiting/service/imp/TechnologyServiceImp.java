@@ -24,7 +24,7 @@ public class TechnologyServiceImp implements TechnologyService {
     private ModelMapper modelMapper;
 
     @Override
-    public String createTechnology(TechnologyDto request) {
+    public void createTechnology(TechnologyDto request) {
         try {
             log.info("Technology will be created");
             List<Technology> technologyList = technologyRepository.findAll();
@@ -35,7 +35,6 @@ public class TechnologyServiceImp implements TechnologyService {
             log.info("Technology will be saved in the Data Base");
             technologyRepository.save(technology);
             log.info("Successfully Saved Technology");
-            return "Successfully Saved Technology";
         } catch (DataAlreadyExistException e) {
             log.error("This Technology already exist", e);
             throw new RuntimeException(e.getMessage());
@@ -43,7 +42,7 @@ public class TechnologyServiceImp implements TechnologyService {
     }
 
     @Override
-    public String deleteTechnologyById(Long id) {
+    public void deleteTechnologyById(Long id) {
         try {
             log.info("Technology Id: " + id + " will be deleted");
             Optional<Technology> technology = technologyRepository.findById(id);
@@ -52,7 +51,6 @@ public class TechnologyServiceImp implements TechnologyService {
             }
             log.info("Technology will be deleted in the Data Base");
             technologyRepository.delete(technology.get());
-            return "Successfully deleted Technology";
         } catch (NotFoundException e) {
             log.error("Technology " + id + " not found", e);
             throw new RuntimeException(e.getMessage());
@@ -60,7 +58,7 @@ public class TechnologyServiceImp implements TechnologyService {
     }
 
     @Override
-    public String updateTechnology(Long id, TechnologyDto request) {
+    public void updateTechnology(Long id, TechnologyDto request) {
         try {
             log.info("Technology id: " + id + " will be updated");
             Optional<Technology> technology = technologyRepository.findById(id);
@@ -72,7 +70,6 @@ public class TechnologyServiceImp implements TechnologyService {
             log.info("Technology will be saved in the Data Base");
             technologyRepository.save(technology.get());
             log.info("Successfully updated Technology");
-            return "Successfully updated Technology";
         } catch (NotFoundException e) {
             log.error("Technology id: " + id + " not found", e);
             throw new RuntimeException(e.getMessage());

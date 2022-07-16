@@ -36,8 +36,9 @@ public class TechnologyController {
             @ApiResponse(responseCode = "409", description = "This Technology already exist", content = @Content)
     })
     @PostMapping()
-    public ResponseEntity<String> saveTechnology(@Valid @RequestBody TechnologyDto request) {
-        return new ResponseEntity<>(technologyService.createTechnology(request), HttpStatus.CREATED);
+    public ResponseEntity<HttpStatus> saveTechnology(@Valid @RequestBody TechnologyDto request) {
+        technologyService.createTechnology(request);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Operation(summary = "Delete Technology by Id")
@@ -47,8 +48,9 @@ public class TechnologyController {
 
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteCandidate(@PathVariable Long id) {
-        return new ResponseEntity<>(technologyService.deleteTechnologyById(id), HttpStatus.OK);
+    public ResponseEntity<HttpStatus> deleteCandidate(@PathVariable Long id) {
+        technologyService.deleteTechnologyById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Operation(summary = "Update Technology by Id")
@@ -57,8 +59,9 @@ public class TechnologyController {
             @ApiResponse(responseCode = "404", description = "Technology not found", content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateTechnology(@PathVariable Long id, @RequestBody TechnologyDto request) {
-        return new ResponseEntity<>(technologyService.updateTechnology(id, request), HttpStatus.OK);
+    public ResponseEntity<HttpStatus> updateTechnology(@PathVariable Long id, @RequestBody TechnologyDto request) {
+        technologyService.updateTechnology(id, request);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Operation(summary = "Get Technology by Id")
