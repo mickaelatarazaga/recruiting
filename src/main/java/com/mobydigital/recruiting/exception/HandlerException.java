@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class HandlerException {
 
     @ExceptionHandler(DataAlreadyExistException.class)
-    public ResponseEntity<?> dataAlreadyExistException(Exception e) {
+    public ResponseEntity<String> dataAlreadyExistException(Exception e) {
         return ResponseEntity.status(HttpStatus.OK).body(e.getMessage());
     }
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<?> candidateNotFoundHandler(Exception e) {
+    public ResponseEntity<String> candidateNotFoundHandler(Exception e) {
         return ResponseEntity.status(HttpStatus.OK).body(e.getMessage());
     }
 
