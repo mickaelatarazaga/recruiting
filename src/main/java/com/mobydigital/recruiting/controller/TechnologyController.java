@@ -35,7 +35,7 @@ public class TechnologyController {
             @ApiResponse(responseCode = "201", description = "Successfully Saved Technology", content = @Content),
             @ApiResponse(responseCode = "409", description = "This Technology already exist", content = @Content)
     })
-    @PostMapping()
+    @PostMapping("/add")
     public ResponseEntity<HttpStatus> saveTechnology(@Valid @RequestBody TechnologyDto request) {
         technologyService.createTechnology(request);
         return new ResponseEntity<>(HttpStatus.CREATED);

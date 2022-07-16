@@ -37,7 +37,7 @@ public class CandidateController {
             @ApiResponse(responseCode = "201", description = "Successfully Saved Candidate", content = @Content),
             @ApiResponse(responseCode = "409", description = "The Candidate DNI number already exist", content = @Content)
     })
-    @PostMapping()
+    @PostMapping("/add")
     public ResponseEntity<HttpStatus> saveCandidate(@Valid @RequestBody CandidateDto request) {
         candidateService.createCandidate(request);
         return new ResponseEntity<>(HttpStatus.CREATED);

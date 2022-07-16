@@ -33,7 +33,7 @@ public class ExperienceServiceImp implements ExperienceService {
     private TechnologyService technologyService;
 
     @Override
-    public String createExperience(ExperienceDto request) {
+    public void createExperience(ExperienceDto request) {
         try {
             log.info("Experience will be created");
             if (experienceRepository.findByCandidateIdAndTechnologyId(request.getCandidateId(), request.getTechnologyId()) != null) {
@@ -50,7 +50,6 @@ public class ExperienceServiceImp implements ExperienceService {
             log.info("Experience will be saved in the Data Base");
             experienceRepository.save(experience);
             log.info("Successfully Saved Experience");
-            return "Successfully Saved Experience";
         } catch (DataAlreadyExistException e) {
             log.error("This Experience already exist", e);
             throw new RuntimeException(e.getMessage());
@@ -58,14 +57,15 @@ public class ExperienceServiceImp implements ExperienceService {
     }
 
     @Override
-    public String deleteExperienceById(Long id) {
+    public void deleteExperienceById(Long id) {
         try {
+            log.info("Experience Id: " + id + " will be deleted");
             Optional<Experience> experience = experienceRepository.findById(id);
             if (!experience.isPresent()) {
                 throw new NotFoundException("Experience " + id + " not found");
             }
+            log.info("Experience will be saved in the Data Base");
             experienceRepository.delete(experience.get());
-            return "Successfully deleted Experience";
         } catch (NotFoundException e) {
             log.error("Experience " + id + " not found", e);
             throw new RuntimeException(e.getMessage());
@@ -73,7 +73,7 @@ public class ExperienceServiceImp implements ExperienceService {
     }
 
     @Override
-    public String updateExperience(Long id, ExperienceDto request) {
+    public void updateExperience(Long id, ExperienceDto request) {
         try {
             log.info("Experience id: " + id + " will be updated");
             Optional<Experience> experience = experienceRepository.findById(id);
@@ -91,7 +91,6 @@ public class ExperienceServiceImp implements ExperienceService {
             log.info("Experience will be saved in the Data Base");
             experienceRepository.save(experienceToSaved);
             log.info("Successfully Updated Experience");
-            return "Successfully Updated Experience";
         } catch (NotFoundException e) {
             log.error("Experience id: " + id + " not found", e);
             throw new RuntimeException(e.getMessage());
@@ -121,7 +120,7 @@ public class ExperienceServiceImp implements ExperienceService {
         List<Experience> experienceList = experienceRepository.findAll();
         List<ExperienceDto> experienceDtoList = new ArrayList<>();
         for (Experience experience : experienceList) {
-            log.info("The experience is being added to the list");
+            log.info("The experience id: " + experience.getId() + " is being added to the list");
             experienceDtoList.add(modelMapper.map(experience, ExperienceDto.class));
         }
         log.info("Experiences searched successfully");

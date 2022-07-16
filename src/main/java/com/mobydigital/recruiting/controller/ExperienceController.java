@@ -36,7 +36,7 @@ public class ExperienceController {
             @ApiResponse(responseCode = "201", description = "Successfully Saved Experience", content = @Content),
             @ApiResponse(responseCode = "409", description = "This Experience already exist", content = @Content)
     })
-    @PostMapping()
+    @PostMapping("/add")
     public ResponseEntity<HttpStatus> saveExperience(@Valid @RequestBody ExperienceDto request) {
         experienceService.createExperience(request);
         return new ResponseEntity<>(HttpStatus.CREATED);
