@@ -105,9 +105,8 @@ public class ExperienceServiceImp implements ExperienceService {
             if (!experience.isPresent()) {
                 throw new NotFoundException("Experience " + id + " not found");
             }
-            ExperienceDto experienceDto = modelMapper.map(experience.get(), ExperienceDto.class);
             log.info("Experience searched successfully");
-            return experienceDto;
+            return modelMapper.map(experience.get(), ExperienceDto.class);
         } catch (NotFoundException e) {
             log.error("The experience id: " + id + " will be searched", e);
             throw new RuntimeException(e);
@@ -130,7 +129,6 @@ public class ExperienceServiceImp implements ExperienceService {
     @Override
     public List<ExperienceDto> getAllExperiencesByCandidate(Long id) {
         log.info("All experiences by candidate id: " + id + " will be searched");
-        Candidate candidate = candidateService.returnCandidateById(id);
         List<Experience> experienceList = experienceRepository.findAllByCandidateId(id);
         List<ExperienceDto> experienceDtoList = new ArrayList<>();
         for (Experience experience : experienceList) {

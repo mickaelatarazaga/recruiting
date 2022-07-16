@@ -96,9 +96,8 @@ public class CandidateServiceImp implements CandidateService {
             if (!candidate.isPresent()) {
                 throw new NotFoundException("Candidate " + id + " not found");
             }
-            CandidateDto candidateDto = modelMapper.map(candidate.get(), CandidateDto.class);
             log.info("Candidate searched successfully");
-            return candidateDto;
+            return modelMapper.map(candidate.get(), CandidateDto.class);
         } catch (NotFoundException e) {
             log.error("Candidate " + id + " not found", e);
             throw new RuntimeException(e.getMessage());

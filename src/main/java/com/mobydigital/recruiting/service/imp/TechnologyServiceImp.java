@@ -97,9 +97,8 @@ public class TechnologyServiceImp implements TechnologyService {
             if (!technology.isPresent()) {
                 throw new NotFoundException("Technology " + id + " not found");
             }
-            TechnologyDto technologyDto = modelMapper.map(technology.get(), TechnologyDto.class);
             log.info("Technology searched successfully");
-            return technologyDto;
+            return modelMapper.map(technology.get(), TechnologyDto.class);
         } catch (NotFoundException e) {
             log.error("Technology " + id + " not found", e);
             throw new RuntimeException(e.getMessage());
