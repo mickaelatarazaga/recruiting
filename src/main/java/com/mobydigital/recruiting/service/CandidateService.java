@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface CandidateService {
 
-    String createCandidate(CandidateDto request);
+    void createCandidate(CandidateDto request);
 
-    String deleteCandidateById(Long id);
+    void deleteCandidateById(Long id);
 
-    String updateCandidateByDni(Long id, CandidateDto request);
+    void updateCandidateByDni(Long id, CandidateDto request);
 
     CandidateDto getCandidateById(Long id);
 

@@ -38,8 +38,9 @@ public class CandidateController {
             @ApiResponse(responseCode = "409", description = "The Candidate DNI number already exist", content = @Content)
     })
     @PostMapping()
-    public ResponseEntity<String> saveCandidate(@Valid @RequestBody CandidateDto request) {
-        return new ResponseEntity<>(candidateService.createCandidate(request), HttpStatus.CREATED);
+    public ResponseEntity<HttpStatus> saveCandidate(@Valid @RequestBody CandidateDto request) {
+        candidateService.createCandidate(request);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Operation(summary = "Delete Candidate by Id")
@@ -49,8 +50,9 @@ public class CandidateController {
 
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteCandidate(@PathVariable Long id) {
-        return new ResponseEntity<>(candidateService.deleteCandidateById(id), HttpStatus.OK);
+    public ResponseEntity<HttpStatus> deleteCandidate(@PathVariable Long id) {
+        candidateService.deleteCandidateById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Operation(summary = "Update Candidate by Id")
@@ -59,8 +61,9 @@ public class CandidateController {
             @ApiResponse(responseCode = "404", description = "Candidate not found", content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateCandidate(@PathVariable Long id, @Valid @RequestBody CandidateDto request) {
-        return new ResponseEntity<>(candidateService.updateCandidateByDni(id, request), HttpStatus.OK);
+    public ResponseEntity<HttpStatus> updateCandidate(@PathVariable Long id, @Valid @RequestBody CandidateDto request) {
+        candidateService.updateCandidateByDni(id, request);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Operation(summary = "Get Candidate by Id")

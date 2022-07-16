@@ -28,7 +28,7 @@ public class CandidateServiceImp implements CandidateService {
     private ModelMapper modelMapper;
 
     @Override
-    public String createCandidate(CandidateDto request) {
+    public void createCandidate(CandidateDto request) {
         try {
             log.info("Candidate will be saved in the Data Base");
             List<Candidate> candidateList = candidateRepository.findAll();
@@ -38,7 +38,6 @@ public class CandidateServiceImp implements CandidateService {
             Candidate candidate = modelMapper.map(request, Candidate.class);
             candidateRepository.save(candidate);
             log.info("Successfully Saved Candidate");
-            return "Successfully Saved Candidate";
         } catch (DataAlreadyExistException e) {
             log.error("DNI: " + request.getDniNumber() + " already exist", e);
             throw new RuntimeException(e.getMessage());
@@ -46,7 +45,7 @@ public class CandidateServiceImp implements CandidateService {
     }
 
     @Override
-    public String deleteCandidateById(Long id) {
+    public void deleteCandidateById(Long id) {
         try {
             log.info("Soft delete of Candidate Id: " + id);
             Optional<Candidate> candidate = candidateRepository.findById(id);
@@ -56,7 +55,6 @@ public class CandidateServiceImp implements CandidateService {
             candidate.get().setDeleted(true);
             candidateRepository.save(candidate.get());
             log.info("Successfully deleted Candidate");
-            return "Successfully deleted Candidate";
         } catch (NotFoundException e) {
             log.error("Candidate " + id + " not found", e);
             throw new RuntimeException(e);
@@ -64,7 +62,7 @@ public class CandidateServiceImp implements CandidateService {
     }
 
     @Override
-    public String updateCandidateByDni(Long id, CandidateDto request) {
+    public void updateCandidateByDni(Long id, CandidateDto request) {
         try {
             log.info("Candidate id: " + id + " will be updated");
             Optional<Candidate> candidate = candidateRepository.findById(id);
@@ -79,7 +77,6 @@ public class CandidateServiceImp implements CandidateService {
             candidate.get().setBirthday(formatDate.parse(request.getBirthday()));
             candidateRepository.save(candidate.get());
             log.info("Successfully updated Candidate");
-            return "Successfully updated Candidate";
         } catch (NotFoundException e) {
             log.error("Candidate ID number " + id + " not found", e);
             throw new RuntimeException(e.getMessage());
