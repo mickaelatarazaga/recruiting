@@ -1,7 +1,7 @@
 package com.mobydigital.recruiting.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.mobydigital.recruiting.enums.TypeOfDni;
+import com.mobydigital.recruiting.model.enums.TypeOfDni;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

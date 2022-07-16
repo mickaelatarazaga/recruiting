@@ -1,6 +1,6 @@
 package com.mobydigital.recruiting.model.dto;
 
-import com.mobydigital.recruiting.enums.TypeOfDni;
+import com.mobydigital.recruiting.model.enums.TypeOfDni;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
