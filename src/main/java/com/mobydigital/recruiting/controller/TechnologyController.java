@@ -1,7 +1,5 @@
 package com.mobydigital.recruiting.controller;
 
-import com.mobydigital.recruiting.exception.DataAlreadyExistException;
-import com.mobydigital.recruiting.exception.NotFoundException;
 import com.mobydigital.recruiting.model.dto.TechnologyDto;
 import com.mobydigital.recruiting.service.TechnologyService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,7 +11,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -31,7 +36,7 @@ public class TechnologyController {
             @ApiResponse(responseCode = "409", description = "This Technology already exist", content = @Content)
     })
     @PostMapping()
-    public ResponseEntity<String> saveTechnology(@Valid @RequestBody TechnologyDto request) throws DataAlreadyExistException {
+    public ResponseEntity<String> saveTechnology(@Valid @RequestBody TechnologyDto request) {
         return new ResponseEntity<>(technologyService.createTechnology(request), HttpStatus.CREATED);
     }
 
@@ -42,7 +47,7 @@ public class TechnologyController {
 
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteCandidate(@PathVariable Long id) throws NotFoundException {
+    public ResponseEntity<String> deleteCandidate(@PathVariable Long id) {
         return new ResponseEntity<>(technologyService.deleteTechnologyById(id), HttpStatus.OK);
     }
 
@@ -52,7 +57,7 @@ public class TechnologyController {
             @ApiResponse(responseCode = "404", description = "Technology not found", content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateTechnology(@PathVariable Long id, @RequestBody TechnologyDto request) throws NotFoundException {
+    public ResponseEntity<String> updateTechnology(@PathVariable Long id, @RequestBody TechnologyDto request) {
         return new ResponseEntity<>(technologyService.updateTechnology(id, request), HttpStatus.OK);
     }
 
@@ -63,7 +68,7 @@ public class TechnologyController {
 
     })
     @GetMapping("/{id}")
-    public ResponseEntity<TechnologyDto> getTechnologyById(@PathVariable Long id) throws NotFoundException {
+    public ResponseEntity<TechnologyDto> getTechnologyById(@PathVariable Long id) {
         return new ResponseEntity<>(technologyService.getTechnologyById(id), HttpStatus.OK);
     }
 
