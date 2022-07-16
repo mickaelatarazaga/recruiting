@@ -1,7 +1,5 @@
 package com.mobydigital.recruiting.controller;
 
-import com.mobydigital.recruiting.exception.DataAlreadyExistException;
-import com.mobydigital.recruiting.exception.NotFoundException;
 import com.mobydigital.recruiting.model.dto.CandidateDto;
 import com.mobydigital.recruiting.model.entity.Candidate;
 import com.mobydigital.recruiting.service.CandidateService;
@@ -14,10 +12,16 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.text.ParseException;
 import java.util.List;
 
 @Tag(name = "Candidates")
@@ -34,7 +38,7 @@ public class CandidateController {
             @ApiResponse(responseCode = "409", description = "The Candidate DNI number already exist", content = @Content)
     })
     @PostMapping()
-    public ResponseEntity<String> saveCandidate(@Valid @RequestBody CandidateDto request) throws DataAlreadyExistException {
+    public ResponseEntity<String> saveCandidate(@Valid @RequestBody CandidateDto request) {
         return new ResponseEntity<>(candidateService.createCandidate(request), HttpStatus.CREATED);
     }
 
@@ -45,7 +49,7 @@ public class CandidateController {
 
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteCandidate(@PathVariable Long id) throws NotFoundException {
+    public ResponseEntity<String> deleteCandidate(@PathVariable Long id) {
         return new ResponseEntity<>(candidateService.deleteCandidateById(id), HttpStatus.OK);
     }
 
@@ -55,7 +59,7 @@ public class CandidateController {
             @ApiResponse(responseCode = "404", description = "Candidate not found", content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateCandidate(@PathVariable Long id, @Valid @RequestBody CandidateDto request) throws NotFoundException, ParseException {
+    public ResponseEntity<String> updateCandidate(@PathVariable Long id, @Valid @RequestBody CandidateDto request) {
         return new ResponseEntity<>(candidateService.updateCandidateByDni(id, request), HttpStatus.OK);
     }
 
@@ -66,7 +70,7 @@ public class CandidateController {
 
     })
     @GetMapping("/{id}")
-    public ResponseEntity<CandidateDto> getCandidate(@PathVariable Long id) throws NotFoundException {
+    public ResponseEntity<CandidateDto> getCandidate(@PathVariable Long id) {
         return new ResponseEntity<>(candidateService.getCandidateById(id), HttpStatus.OK);
     }
 

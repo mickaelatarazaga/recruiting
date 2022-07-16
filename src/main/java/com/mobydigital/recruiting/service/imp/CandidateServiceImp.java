@@ -6,6 +6,7 @@ import com.mobydigital.recruiting.model.dto.CandidateDto;
 import com.mobydigital.recruiting.model.entity.Candidate;
 import com.mobydigital.recruiting.repository.CandidateRepository;
 import com.mobydigital.recruiting.service.CandidateService;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class CandidateServiceImp implements CandidateService {
 
@@ -26,69 +28,110 @@ public class CandidateServiceImp implements CandidateService {
     private ModelMapper modelMapper;
 
     @Override
-    public String createCandidate(CandidateDto request) throws DataAlreadyExistException {
-        List<Candidate> candidateList = candidateRepository.findAll();
-        if (candidateList.stream().anyMatch(candidate -> candidate.getDniNumber().equals(request.getDniNumber()))) {
-            throw new DataAlreadyExistException("The Candidate DNI number " + request.getDniNumber() + " already exist");
+    public String createCandidate(CandidateDto request) {
+        try {
+            log.info("Candidate will be saved in the Data Base");
+            List<Candidate> candidateList = candidateRepository.findAll();
+            if (candidateList.stream().anyMatch(candidate -> candidate.getDniNumber().equals(request.getDniNumber()))) {
+                throw new DataAlreadyExistException("The Candidate DNI number " + request.getDniNumber() + " already exist");
+            }
+            Candidate candidate = modelMapper.map(request, Candidate.class);
+            candidateRepository.save(candidate);
+            log.info("Successfully Saved Candidate");
+            return "Successfully Saved Candidate";
+        } catch (DataAlreadyExistException e) {
+            log.error("DNI: " + request.getDniNumber() + " already exist", e);
+            throw new RuntimeException(e.getMessage());
         }
-        Candidate candidate = modelMapper.map(request, Candidate.class);
-        candidateRepository.save(candidate);
-        return "Successfully Saved Candidate";
     }
 
     @Override
-    public String deleteCandidateById(Long id) throws NotFoundException {
-        Optional<Candidate> candidate = candidateRepository.findById(id);
-        if (!candidate.isPresent()) {
-            throw new NotFoundException("Candidate " + id + " not found");
+    public String deleteCandidateById(Long id) {
+        try {
+            log.info("Soft delete of Candidate Id: " + id);
+            Optional<Candidate> candidate = candidateRepository.findById(id);
+            if (!candidate.isPresent()) {
+                throw new NotFoundException("Candidate " + id + " not found");
+            }
+            candidate.get().setDeleted(true);
+            candidateRepository.save(candidate.get());
+            log.info("Successfully deleted Candidate");
+            return "Successfully deleted Candidate";
+        } catch (NotFoundException e) {
+            log.error("Candidate " + id + " not found", e);
+            throw new RuntimeException(e);
         }
-        candidate.get().setDeleted(true);
-        candidateRepository.save(candidate.get());
-        return "Successfully deleted Candidate";
     }
 
     @Override
-    public String updateCandidateByDni(Long id, CandidateDto request) throws NotFoundException, ParseException {
-        Optional<Candidate> candidate = candidateRepository.findById(id);
-        if (!candidate.isPresent()) {
-            throw new NotFoundException("The Candidate ID number " + id + " not found");
+    public String updateCandidateByDni(Long id, CandidateDto request) {
+        try {
+            log.info("Candidate id: " + id + " will be updated");
+            Optional<Candidate> candidate = candidateRepository.findById(id);
+            if (!candidate.isPresent()) {
+                throw new NotFoundException("The Candidate ID number " + id + " not found");
+            }
+            candidate.get().setFirstName(request.getFirstName());
+            candidate.get().setLastName(request.getLastName());
+            candidate.get().setTypeOfDni(request.getTypeOfDni());
+            candidate.get().setDniNumber(request.getDniNumber());
+            SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
+            candidate.get().setBirthday(formatDate.parse(request.getBirthday()));
+            candidateRepository.save(candidate.get());
+            log.info("Successfully updated Candidate");
+            return "Successfully updated Candidate";
+        } catch (NotFoundException e) {
+            log.error("Candidate ID number " + id + " not found", e);
+            throw new RuntimeException(e.getMessage());
+        } catch (ParseException e) {
+            log.error("Error formatting the date", e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
-        candidate.get().setFirstName(request.getFirstName());
-        candidate.get().setLastName(request.getLastName());
-        candidate.get().setTypeOfDni(request.getTypeOfDni());
-        candidate.get().setDniNumber(request.getDniNumber());
-        SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
-        candidate.get().setBirthday(formatDate.parse(request.getBirthday()));
-        candidateRepository.save(candidate.get());
-        return "Successfully updated Candidate";
     }
 
     @Override
-    public CandidateDto getCandidateById(Long id) throws NotFoundException {
-        Optional<Candidate> candidate = candidateRepository.findById(id);
-        if (!candidate.isPresent()) {
-            throw new NotFoundException("Candidate " + id + " not found");
+    public CandidateDto getCandidateById(Long id) {
+        try {
+            log.info("The candidate id: " + id + " will be searched");
+            Optional<Candidate> candidate = candidateRepository.findById(id);
+            if (!candidate.isPresent()) {
+                throw new NotFoundException("Candidate " + id + " not found");
+            }
+            CandidateDto candidateDto = modelMapper.map(candidate.get(), CandidateDto.class);
+            log.info("Candidate searched successfully");
+            return candidateDto;
+        } catch (NotFoundException e) {
+            log.error("Candidate " + id + " not found", e);
+            throw new RuntimeException(e.getMessage());
         }
-        CandidateDto candidateDto = modelMapper.map(candidate.get(), CandidateDto.class);
-        return candidateDto;
     }
 
     @Override
-    public Candidate returnCandidateById(Long id) throws NotFoundException {
-        Optional<Candidate> candidate = candidateRepository.findById(id);
-        if (!candidate.isPresent()) {
-            throw new NotFoundException("Candidate " + id + " not found");
+    public Candidate returnCandidateById(Long id) {
+        log.info("The candidate id: " + id + " will be searched");
+        try {
+            Optional<Candidate> candidate = candidateRepository.findById(id);
+            if (!candidate.isPresent()) {
+                throw new NotFoundException("Candidate " + id + " not found");
+            }
+            log.info("Candidate searched successfully");
+            return candidate.get();
+        } catch (NotFoundException e) {
+            log.error("Candidate " + id + " not found", e);
+            throw new RuntimeException(e);
         }
-        return candidate.get();
     }
 
     @Override
     public List<CandidateDto> getAllCandidates() {
+        log.info("All candidates will be searched");
         List<Candidate> candidateList = candidateRepository.findAll();
         List<CandidateDto> candidateDtoList = new ArrayList<>();
         for (Candidate candidate : candidateList) {
+            log.info("The candidate id: " + candidate.getId() + " is being added to the list");
             candidateDtoList.add(modelMapper.map(candidate, CandidateDto.class));
         }
+        log.info("Candidates searched successfully");
         return candidateDtoList;
     }
 
