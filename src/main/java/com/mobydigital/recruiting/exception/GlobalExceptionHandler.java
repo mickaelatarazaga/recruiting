@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class HandlerException {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(DataAlreadyExistException.class)
     public ResponseEntity<String> dataAlreadyExistException(Exception e) {
