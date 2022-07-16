@@ -51,7 +51,7 @@ public class CandidateServiceImp implements CandidateService {
         try {
             log.info("Soft delete of Candidate Id: " + id);
             Optional<Candidate> candidate = candidateRepository.findById(id);
-            if (!candidate.isPresent()) {
+            if (candidate.isEmpty()) {
                 throw new NotFoundException("Candidate " + id + " not found");
             }
             candidate.get().setDeleted(true);
@@ -68,7 +68,7 @@ public class CandidateServiceImp implements CandidateService {
         try {
             log.info("Candidate id: " + id + " will be updated");
             Optional<Candidate> candidate = candidateRepository.findById(id);
-            if (!candidate.isPresent()) {
+            if (candidate.isEmpty()) {
                 throw new NotFoundException("The Candidate ID number " + id + " not found");
             }
             candidate.get().setFirstName(request.getFirstName());
@@ -93,7 +93,7 @@ public class CandidateServiceImp implements CandidateService {
         try {
             log.info("The candidate id: " + id + " will be searched");
             Optional<Candidate> candidate = candidateRepository.findById(id);
-            if (!candidate.isPresent()) {
+            if (candidate.isEmpty()) {
                 throw new NotFoundException("Candidate " + id + " not found");
             }
             log.info("Candidate searched successfully");
@@ -109,7 +109,7 @@ public class CandidateServiceImp implements CandidateService {
         log.info("The candidate id: " + id + " will be searched");
         try {
             Optional<Candidate> candidate = candidateRepository.findById(id);
-            if (!candidate.isPresent()) {
+            if (candidate.isEmpty()) {
                 throw new NotFoundException("Candidate " + id + " not found");
             }
             log.info("Candidate searched successfully");

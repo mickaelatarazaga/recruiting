@@ -46,7 +46,7 @@ public class TechnologyServiceImp implements TechnologyService {
         try {
             log.info("Technology Id: " + id + " will be deleted");
             Optional<Technology> technology = technologyRepository.findById(id);
-            if (!technology.isPresent()) {
+            if (technology.isEmpty()) {
                 throw new NotFoundException("Technology " + id + " not found");
             }
             log.info("Technology will be deleted in the Data Base");
@@ -62,7 +62,7 @@ public class TechnologyServiceImp implements TechnologyService {
         try {
             log.info("Technology id: " + id + " will be updated");
             Optional<Technology> technology = technologyRepository.findById(id);
-            if (!technology.isPresent()) {
+            if (technology.isEmpty()) {
                 throw new NotFoundException("Technology id: " + id + " not found");
             }
             technology.get().setName(request.getName());
@@ -94,7 +94,7 @@ public class TechnologyServiceImp implements TechnologyService {
         try {
             log.info("Technology id: " + id + " will be searched");
             Optional<Technology> technology = technologyRepository.findById(id);
-            if (!technology.isPresent()) {
+            if (technology.isEmpty()) {
                 throw new NotFoundException("Technology " + id + " not found");
             }
             log.info("Technology searched successfully");
@@ -110,7 +110,7 @@ public class TechnologyServiceImp implements TechnologyService {
         try {
             log.info("Technology id: " + id + " will be searched");
             Optional<Technology> technology = technologyRepository.findById(id);
-            if (!technology.isPresent()) {
+            if (technology.isEmpty()) {
                 throw new NotFoundException("Technology " + id + " not found");
             }
             log.info("Technology searched successfully");

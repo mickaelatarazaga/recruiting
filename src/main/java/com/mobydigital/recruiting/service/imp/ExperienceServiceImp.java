@@ -61,7 +61,7 @@ public class ExperienceServiceImp implements ExperienceService {
         try {
             log.info("Experience Id: " + id + " will be deleted");
             Optional<Experience> experience = experienceRepository.findById(id);
-            if (!experience.isPresent()) {
+            if (experience.isEmpty()) {
                 throw new NotFoundException("Experience " + id + " not found");
             }
             log.info("Experience will be saved in the Data Base");
@@ -77,12 +77,11 @@ public class ExperienceServiceImp implements ExperienceService {
         try {
             log.info("Experience id: " + id + " will be updated");
             Optional<Experience> experience = experienceRepository.findById(id);
-            if (!experience.isPresent()) {
+            if (experience.isEmpty()) {
                 throw new NotFoundException("Experience id: " + id + " not found");
             }
             Candidate candidate = candidateService.returnCandidateById(request.getCandidateId());
             Technology technology = technologyService.returnTechnologyById(request.getTechnologyId());
-
             Experience experienceToSaved = Experience.builder()
                     .candidate(candidate)
                     .technology(technology)
@@ -102,7 +101,7 @@ public class ExperienceServiceImp implements ExperienceService {
         try {
             log.info("The experience id: " + id + " will be searched");
             Optional<Experience> experience = experienceRepository.findById(id);
-            if (!experience.isPresent()) {
+            if (experience.isEmpty()) {
                 throw new NotFoundException("Experience " + id + " not found");
             }
             log.info("Experience searched successfully");
