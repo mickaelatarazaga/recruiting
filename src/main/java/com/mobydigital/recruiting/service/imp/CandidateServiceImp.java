@@ -76,7 +76,7 @@ public class CandidateServiceImp implements CandidateService {
             candidate.get().setTypeOfDni(request.getTypeOfDni());
             candidate.get().setDniNumber(request.getDniNumber());
             SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
-            candidate.get().setBirthday(formatDate.parse(request.getBirthday()));
+            candidate.get().setBirthDate(formatDate.parse(request.getBirthDate()));
             candidateRepository.save(candidate.get());
             log.info("Successfully updated Candidate");
         } catch (NotFoundException e) {

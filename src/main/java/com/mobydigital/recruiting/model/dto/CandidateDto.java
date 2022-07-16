@@ -31,5 +31,5 @@ public class CandidateDto {
 
     @NotBlank(message = "Birthday cannot be blank")
     @Schema(name = "birthday", example = "1998-11-02", type = "String", required = true)
-    private String birthday;
+    private String birthDate;
 }
