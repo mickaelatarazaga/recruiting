@@ -105,35 +105,33 @@ public class TechnologyServiceImp implements TechnologyService {
 
     @Override
     public TechnologyDto getTechnologyById(Long id) {
-
-        log.info(TECHNOLOGY + ID_EQUAL_TO + id + WILL_BE_SEARCHED);
-        Optional<Technology> technology = technologyRepository.findById(id);
         try {
+            log.info(TECHNOLOGY + ID_EQUAL_TO + id + WILL_BE_SEARCHED);
+            Optional<Technology> technology = technologyRepository.findById(id);
             if (technology.isEmpty()) {
                 throw new NotFoundException(TECHNOLOGY + id + NOT_FOUND);
             }
+            log.info(SUCCESSFULLY_SEARCHED + TECHNOLOGY);
+            return modelMapper.map(technology.get(), TechnologyDto.class);
         } catch (NotFoundException e) {
             log.error(TECHNOLOGY + id + NOT_FOUND, e);
         }
-        log.info(SUCCESSFULLY_SEARCHED + TECHNOLOGY);
-        return modelMapper.map(technology.get(), TechnologyDto.class);
-
+        return null;
     }
 
     @Override
     public Technology returnTechnologyById(Long id) {
-
-        log.info(TECHNOLOGY + ID_EQUAL_TO + id + WILL_BE_SEARCHED);
-        Optional<Technology> technology = technologyRepository.findById(id);
         try {
+            log.info(TECHNOLOGY + ID_EQUAL_TO + id + WILL_BE_SEARCHED);
+            Optional<Technology> technology = technologyRepository.findById(id);
             if (technology.isEmpty()) {
                 throw new NotFoundException(TECHNOLOGY + id + NOT_FOUND);
             }
+            log.info(SUCCESSFULLY_SEARCHED + TECHNOLOGY);
+            return technology.get();
         } catch (NotFoundException e) {
             log.error(TECHNOLOGY + id + NOT_FOUND, e);
         }
-        log.info(SUCCESSFULLY_SEARCHED + TECHNOLOGY);
-        return technology.get();
-
+        return null;
     }
 }

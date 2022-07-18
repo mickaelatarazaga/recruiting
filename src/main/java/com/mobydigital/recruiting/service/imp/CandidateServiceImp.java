@@ -49,7 +49,6 @@ public class CandidateServiceImp implements CandidateService {
     public void createCandidate(CandidateDto request) {
         try {
             log.info(CANDIDATE + WILL_BE_CREATED);
-
             List<Candidate> candidateList = candidateRepository.findAll();
             if (candidateList.stream().anyMatch(candidate -> candidate.getDniNumber().equals(request.getDniNumber()))) {
                 throw new DataAlreadyExistException(CANDIDATE + DNI_EQUAL_TO + request.getDniNumber() + ALREADY_EXIST);
@@ -105,36 +104,34 @@ public class CandidateServiceImp implements CandidateService {
 
     @Override
     public CandidateDto getCandidateById(Long id) {
-
-        log.info(CANDIDATE + ID_EQUAL_TO + id + WILL_BE_SEARCHED);
-        Optional<Candidate> candidate = candidateRepository.findById(id);
         try {
+            log.info(CANDIDATE + ID_EQUAL_TO + id + WILL_BE_SEARCHED);
+            Optional<Candidate> candidate = candidateRepository.findById(id);
             if (candidate.isEmpty()) {
                 throw new NotFoundException(CANDIDATE + ID_EQUAL_TO + id + NOT_FOUND);
             }
+            log.info(SUCCESSFULLY_SEARCHED + CANDIDATE);
+            return modelMapper.map(candidate.get(), CandidateDto.class);
         } catch (NotFoundException e) {
             log.error(CANDIDATE + ID_EQUAL_TO + id + NOT_FOUND, e);
         }
-        log.info(SUCCESSFULLY_SEARCHED + CANDIDATE);
-        return modelMapper.map(candidate.get(), CandidateDto.class);
-
+        return null;
     }
 
     @Override
     public Candidate returnCandidateById(Long id) {
-        log.info(CANDIDATE + ID_EQUAL_TO + id + WILL_BE_SEARCHED);
-
-        Optional<Candidate> candidate = candidateRepository.findById(id);
         try {
+            log.info(CANDIDATE + ID_EQUAL_TO + id + WILL_BE_SEARCHED);
+            Optional<Candidate> candidate = candidateRepository.findById(id);
             if (candidate.isEmpty()) {
                 throw new NotFoundException(CANDIDATE + ID_EQUAL_TO + id + NOT_FOUND);
             }
+            log.info(SUCCESSFULLY_SEARCHED + CANDIDATE);
+            return candidate.get();
         } catch (NotFoundException e) {
             log.error(CANDIDATE + ID_EQUAL_TO + id + NOT_FOUND, e);
         }
-        log.info(SUCCESSFULLY_SEARCHED + CANDIDATE);
-        return candidate.get();
-
+        return null;
     }
 
     @Override

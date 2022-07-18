@@ -110,18 +110,18 @@ public class ExperienceServiceImp implements ExperienceService {
 
     @Override
     public ExperienceDto getExperienceById(Long id) {
-
-        log.info(EXPERIENCE + ID_EQUAL_TO + id + WILL_BE_SEARCHED);
-        Optional<Experience> experience = experienceRepository.findById(id);
         try {
+            log.info(EXPERIENCE + ID_EQUAL_TO + id + WILL_BE_SEARCHED);
+            Optional<Experience> experience = experienceRepository.findById(id);
             if (experience.isEmpty()) {
                 throw new NotFoundException(EXPERIENCE + ID_EQUAL_TO + id + NOT_FOUND);
             }
+            log.info(SUCCESSFULLY_SEARCHED + EXPERIENCE);
+            return modelMapper.map(experience.get(), ExperienceDto.class);
         } catch (NotFoundException e) {
             log.error(EXPERIENCE + ID_EQUAL_TO + id + WILL_BE_SEARCHED, e);
         }
-        log.info(SUCCESSFULLY_SEARCHED + EXPERIENCE);
-        return modelMapper.map(experience.get(), ExperienceDto.class);
+        return null;
     }
 
     @Override
