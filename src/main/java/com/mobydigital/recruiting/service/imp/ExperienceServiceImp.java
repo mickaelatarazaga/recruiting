@@ -19,6 +19,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.mobydigital.recruiting.utils.Constant.ADDED_TO_THE_LIST;
+import static com.mobydigital.recruiting.utils.Constant.ALREADY_EXIST;
+import static com.mobydigital.recruiting.utils.Constant.EXPERIENCE;
+import static com.mobydigital.recruiting.utils.Constant.EXPERIENCES;
+import static com.mobydigital.recruiting.utils.Constant.ID_EQUAL_TO;
+import static com.mobydigital.recruiting.utils.Constant.NOT_FOUND;
+import static com.mobydigital.recruiting.utils.Constant.SUCCESSFULLY_SAVED;
+import static com.mobydigital.recruiting.utils.Constant.SUCCESSFULLY_SEARCHED;
+import static com.mobydigital.recruiting.utils.Constant.SUCCESSFULLY_UPDATED;
+import static com.mobydigital.recruiting.utils.Constant.WILL_BE_CREATED;
+import static com.mobydigital.recruiting.utils.Constant.WILL_BE_DELETED;
+import static com.mobydigital.recruiting.utils.Constant.WILL_BE_SAVED_IN_THE_DATA_BASE;
+import static com.mobydigital.recruiting.utils.Constant.WILL_BE_SEARCHED;
+import static com.mobydigital.recruiting.utils.Constant.WILL_BE_UPDATED;
+
 @Slf4j
 @Service
 public class ExperienceServiceImp implements ExperienceService {
@@ -35,9 +50,9 @@ public class ExperienceServiceImp implements ExperienceService {
     @Override
     public void createExperience(ExperienceDto request) {
         try {
-            log.info("Experience will be created");
+            log.info(EXPERIENCE + WILL_BE_CREATED);
             if (experienceRepository.findByCandidateIdAndTechnologyId(request.getCandidateId(), request.getTechnologyId()) != null) {
-                throw new DataAlreadyExistException("This Experience already exist");
+                throw new DataAlreadyExistException(EXPERIENCE + ALREADY_EXIST);
             }
             Candidate candidate = candidateService.returnCandidateById(request.getCandidateId());
             Technology technology = technologyService.returnTechnologyById(request.getTechnologyId());
@@ -47,36 +62,36 @@ public class ExperienceServiceImp implements ExperienceService {
                     .technology(technology)
                     .yearsExperience(request.getYearsExperience())
                     .build();
-            log.info("Experience will be saved in the Data Base");
+            log.info(EXPERIENCE + WILL_BE_SAVED_IN_THE_DATA_BASE);
             experienceRepository.save(experience);
-            log.info("Successfully Saved Experience");
+            log.info(SUCCESSFULLY_SAVED + EXPERIENCE);
         } catch (DataAlreadyExistException e) {
-            log.error("This Experience already exist", e);
+            log.error(EXPERIENCE + ALREADY_EXIST, e);
         }
     }
 
     @Override
     public void deleteExperienceById(Long id) {
         try {
-            log.info("Experience Id: " + id + " will be deleted");
+            log.info(EXPERIENCE + ID_EQUAL_TO + id + WILL_BE_DELETED);
             Optional<Experience> experience = experienceRepository.findById(id);
             if (experience.isEmpty()) {
-                throw new NotFoundException("Experience " + id + " not found");
+                throw new NotFoundException(EXPERIENCE + ID_EQUAL_TO + id + NOT_FOUND);
             }
-            log.info("Experience will be saved in the Data Base");
+            log.info(EXPERIENCE + WILL_BE_SAVED_IN_THE_DATA_BASE);
             experienceRepository.delete(experience.get());
         } catch (NotFoundException e) {
-            log.error("Experience " + id + " not found", e);
+            log.error(EXPERIENCE + ID_EQUAL_TO + id + NOT_FOUND, e);
         }
     }
 
     @Override
     public void updateExperience(Long id, ExperienceDto request) {
         try {
-            log.info("Experience id: " + id + " will be updated");
+            log.info(EXPERIENCE + ID_EQUAL_TO + id + WILL_BE_UPDATED);
             Optional<Experience> experience = experienceRepository.findById(id);
             if (experience.isEmpty()) {
-                throw new NotFoundException("Experience id: " + id + " not found");
+                throw new NotFoundException(EXPERIENCE + ID_EQUAL_TO + id + NOT_FOUND);
             }
             Candidate candidate = candidateService.returnCandidateById(request.getCandidateId());
             Technology technology = technologyService.returnTechnologyById(request.getTechnologyId());
@@ -85,53 +100,53 @@ public class ExperienceServiceImp implements ExperienceService {
                     .technology(technology)
                     .yearsExperience(request.getYearsExperience())
                     .build();
-            log.info("Experience will be saved in the Data Base");
+            log.info(EXPERIENCE + WILL_BE_SAVED_IN_THE_DATA_BASE);
             experienceRepository.save(experienceToSaved);
-            log.info("Successfully Updated Experience");
+            log.info(SUCCESSFULLY_UPDATED + EXPERIENCE);
         } catch (NotFoundException e) {
-            log.error("Experience id: " + id + " not found", e);
+            log.error(EXPERIENCE + ID_EQUAL_TO + id + NOT_FOUND, e);
         }
     }
 
     @Override
     public ExperienceDto getExperienceById(Long id) {
 
-        log.info("The experience id: " + id + " will be searched");
+        log.info(EXPERIENCE + ID_EQUAL_TO + id + WILL_BE_SEARCHED);
         Optional<Experience> experience = experienceRepository.findById(id);
         try {
             if (experience.isEmpty()) {
-                throw new NotFoundException("Experience " + id + " not found");
+                throw new NotFoundException(EXPERIENCE + ID_EQUAL_TO + id + NOT_FOUND);
             }
         } catch (NotFoundException e) {
-            log.error("The experience id: " + id + " will be searched", e);
+            log.error(EXPERIENCE + ID_EQUAL_TO + id + WILL_BE_SEARCHED, e);
         }
-        log.info("Experience searched successfully");
+        log.info(SUCCESSFULLY_SEARCHED + EXPERIENCE);
         return modelMapper.map(experience.get(), ExperienceDto.class);
     }
 
     @Override
     public List<ExperienceDto> getAllExperiences() {
-        log.info("All experiences will be searched");
+        log.info(EXPERIENCES + WILL_BE_SEARCHED);
         List<Experience> experienceList = experienceRepository.findAll();
         List<ExperienceDto> experienceDtoList = new ArrayList<>();
         experienceList.forEach(experience -> {
-            log.info("The experience id: " + experience.getId() + " is being added to the list");
+            log.info(EXPERIENCE + ID_EQUAL_TO + experience.getId() + ADDED_TO_THE_LIST);
             experienceDtoList.add(modelMapper.map(experience, ExperienceDto.class));
         });
-        log.info("Experiences searched successfully");
+        log.info(SUCCESSFULLY_SEARCHED + EXPERIENCES);
         return experienceDtoList;
     }
 
     @Override
     public List<ExperienceDto> getAllExperiencesByCandidate(Long id) {
-        log.info("All experiences by candidate id: " + id + " will be searched");
+        log.info("All experiences by candidate" + ID_EQUAL_TO + id + WILL_BE_SEARCHED);
         List<Experience> experienceList = experienceRepository.findAllByCandidateId(id);
         List<ExperienceDto> experienceDtoList = new ArrayList<>();
         experienceList.forEach(experience -> {
-            log.info("The Candidate experience id: " + id + " is being added to the list");
+            log.info("Candidate experience" + ID_EQUAL_TO + id + ADDED_TO_THE_LIST);
             experienceDtoList.add(modelMapper.map(experience, ExperienceDto.class));
         });
-        log.info("Experiences searched successfully");
+        log.info(SUCCESSFULLY_SEARCHED + EXPERIENCES);
         return experienceDtoList;
     }
 }

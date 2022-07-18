@@ -17,6 +17,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.mobydigital.recruiting.utils.Constant.ADDED_TO_THE_LIST;
+import static com.mobydigital.recruiting.utils.Constant.ALREADY_EXIST;
+import static com.mobydigital.recruiting.utils.Constant.CANDIDATE;
+import static com.mobydigital.recruiting.utils.Constant.CANDIDATES;
+import static com.mobydigital.recruiting.utils.Constant.DNI_EQUAL_TO;
+import static com.mobydigital.recruiting.utils.Constant.ID_EQUAL_TO;
+import static com.mobydigital.recruiting.utils.Constant.NOT_FOUND;
+import static com.mobydigital.recruiting.utils.Constant.SUCCESSFULLY_DELETED;
+import static com.mobydigital.recruiting.utils.Constant.SUCCESSFULLY_SAVED;
+import static com.mobydigital.recruiting.utils.Constant.SUCCESSFULLY_SEARCHED;
+import static com.mobydigital.recruiting.utils.Constant.SUCCESSFULLY_UPDATED;
+import static com.mobydigital.recruiting.utils.Constant.WILL_BE_CREATED;
+import static com.mobydigital.recruiting.utils.Constant.WILL_BE_DELETED;
+import static com.mobydigital.recruiting.utils.Constant.WILL_BE_DELETED_IN_THE_DATA_BASE;
+import static com.mobydigital.recruiting.utils.Constant.WILL_BE_SAVED_IN_THE_DATA_BASE;
+import static com.mobydigital.recruiting.utils.Constant.WILL_BE_SEARCHED;
+import static com.mobydigital.recruiting.utils.Constant.WILL_BE_UPDATED;
+
 @Slf4j
 @Service
 public class CandidateServiceImp implements CandidateService {
@@ -30,44 +48,45 @@ public class CandidateServiceImp implements CandidateService {
     @Override
     public void createCandidate(CandidateDto request) {
         try {
-            log.info("Candidate will be created");
+            log.info(CANDIDATE + WILL_BE_CREATED);
 
             List<Candidate> candidateList = candidateRepository.findAll();
             if (candidateList.stream().anyMatch(candidate -> candidate.getDniNumber().equals(request.getDniNumber()))) {
-                throw new DataAlreadyExistException("The Candidate DNI number " + request.getDniNumber() + " already exist");
+                throw new DataAlreadyExistException(CANDIDATE + DNI_EQUAL_TO + request.getDniNumber() + ALREADY_EXIST);
             }
             Candidate candidate = modelMapper.map(request, Candidate.class);
-            log.info("Candidate will be saved in the Data Base");
+            log.info(CANDIDATE + WILL_BE_SAVED_IN_THE_DATA_BASE);
             candidateRepository.save(candidate);
-            log.info("Successfully Saved Candidate");
+            log.info(SUCCESSFULLY_SAVED + CANDIDATE);
         } catch (DataAlreadyExistException e) {
-            log.error("DNI: " + request.getDniNumber() + " already exist", e);
+            log.error(CANDIDATE + DNI_EQUAL_TO + request.getDniNumber() + ALREADY_EXIST, e);
         }
     }
 
     @Override
     public void deleteCandidateById(Long id) {
         try {
-            log.info("Soft delete of Candidate Id: " + id);
+            log.info(CANDIDATE + ID_EQUAL_TO + id + WILL_BE_DELETED);
             Optional<Candidate> candidate = candidateRepository.findById(id);
             if (candidate.isEmpty()) {
-                throw new NotFoundException("Candidate " + id + " not found");
+                throw new NotFoundException(CANDIDATE + ID_EQUAL_TO + id + NOT_FOUND);
             }
+            log.info(CANDIDATE + ID_EQUAL_TO + id + WILL_BE_DELETED_IN_THE_DATA_BASE);
             candidate.get().setDeleted(true);
             candidateRepository.save(candidate.get());
-            log.info("Successfully deleted Candidate");
+            log.info(SUCCESSFULLY_DELETED + CANDIDATE);
         } catch (NotFoundException e) {
-            log.error("Candidate " + id + " not found", e);
+            log.error(CANDIDATE + ID_EQUAL_TO + id + NOT_FOUND, e);
         }
     }
 
     @Override
     public void updateCandidateByDni(Long id, CandidateDto request) {
         try {
-            log.info("Candidate id: " + id + " will be updated");
+            log.info(CANDIDATE + ID_EQUAL_TO + id + WILL_BE_UPDATED);
             Optional<Candidate> candidate = candidateRepository.findById(id);
             if (candidate.isEmpty()) {
-                throw new NotFoundException("The Candidate ID number " + id + " not found");
+                throw new NotFoundException(CANDIDATE + ID_EQUAL_TO + id + NOT_FOUND);
             }
             candidate.get().setFirstName(request.getFirstName());
             candidate.get().setLastName(request.getLastName());
@@ -76,9 +95,9 @@ public class CandidateServiceImp implements CandidateService {
             SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
             candidate.get().setBirthDate(formatDate.parse(request.getBirthDate()));
             candidateRepository.save(candidate.get());
-            log.info("Successfully updated Candidate");
+            log.info(SUCCESSFULLY_UPDATED + CANDIDATE);
         } catch (NotFoundException e) {
-            log.error("Candidate ID number " + id + " not found", e);
+            log.error(CANDIDATE + ID_EQUAL_TO + id + NOT_FOUND, e);
         } catch (ParseException e) {
             log.error("Error formatting the date", e.getMessage());
         }
@@ -87,47 +106,47 @@ public class CandidateServiceImp implements CandidateService {
     @Override
     public CandidateDto getCandidateById(Long id) {
 
-        log.info("The candidate id: " + id + " will be searched");
+        log.info(CANDIDATE + ID_EQUAL_TO + id + WILL_BE_SEARCHED);
         Optional<Candidate> candidate = candidateRepository.findById(id);
         try {
             if (candidate.isEmpty()) {
-                throw new NotFoundException("Candidate " + id + " not found");
+                throw new NotFoundException(CANDIDATE + ID_EQUAL_TO + id + NOT_FOUND);
             }
         } catch (NotFoundException e) {
-            log.error("Candidate " + id + " not found", e);
+            log.error(CANDIDATE + ID_EQUAL_TO + id + NOT_FOUND, e);
         }
-        log.info("Candidate searched successfully");
+        log.info(SUCCESSFULLY_SEARCHED + CANDIDATE);
         return modelMapper.map(candidate.get(), CandidateDto.class);
 
     }
 
     @Override
     public Candidate returnCandidateById(Long id) {
-        log.info("The candidate id: " + id + " will be searched");
+        log.info(CANDIDATE + ID_EQUAL_TO + id + WILL_BE_SEARCHED);
 
         Optional<Candidate> candidate = candidateRepository.findById(id);
         try {
             if (candidate.isEmpty()) {
-                throw new NotFoundException("Candidate " + id + " not found");
+                throw new NotFoundException(CANDIDATE + ID_EQUAL_TO + id + NOT_FOUND);
             }
         } catch (NotFoundException e) {
-            log.error("Candidate " + id + " not found", e);
+            log.error(CANDIDATE + ID_EQUAL_TO + id + NOT_FOUND, e);
         }
-        log.info("Candidate searched successfully");
+        log.info(SUCCESSFULLY_SEARCHED + CANDIDATE);
         return candidate.get();
 
     }
 
     @Override
     public List<CandidateDto> getAllCandidates() {
-        log.info("All candidates will be searched");
+        log.info(CANDIDATES + WILL_BE_SEARCHED);
         List<Candidate> candidateList = candidateRepository.findAll();
         List<CandidateDto> candidateDtoList = new ArrayList<>();
         candidateList.forEach(candidate -> {
-            log.info("The candidate id: " + candidate.getId() + " is being added to the list");
+            log.info(CANDIDATE + ID_EQUAL_TO + candidate.getId() + ADDED_TO_THE_LIST);
             candidateDtoList.add(modelMapper.map(candidate, CandidateDto.class));
         });
-        log.info("Candidates searched successfully");
+        log.info(SUCCESSFULLY_SEARCHED + CANDIDATES);
         return candidateDtoList;
     }
 

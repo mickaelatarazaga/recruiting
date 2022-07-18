@@ -15,9 +15,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.mobydigital.recruiting.utils.Constant.ADDED_TO_THE_LIST;
+import static com.mobydigital.recruiting.utils.Constant.ALREADY_EXIST;
+import static com.mobydigital.recruiting.utils.Constant.ID_EQUAL_TO;
+import static com.mobydigital.recruiting.utils.Constant.NOT_FOUND;
+import static com.mobydigital.recruiting.utils.Constant.SUCCESSFULLY_SAVED;
+import static com.mobydigital.recruiting.utils.Constant.SUCCESSFULLY_SEARCHED;
+import static com.mobydigital.recruiting.utils.Constant.SUCCESSFULLY_UPDATED;
+import static com.mobydigital.recruiting.utils.Constant.TECHNOLOGIES;
+import static com.mobydigital.recruiting.utils.Constant.TECHNOLOGY;
+import static com.mobydigital.recruiting.utils.Constant.WILL_BE_CREATED;
+import static com.mobydigital.recruiting.utils.Constant.WILL_BE_DELETED;
+import static com.mobydigital.recruiting.utils.Constant.WILL_BE_DELETED_IN_THE_DATA_BASE;
+import static com.mobydigital.recruiting.utils.Constant.WILL_BE_SAVED_IN_THE_DATA_BASE;
+import static com.mobydigital.recruiting.utils.Constant.WILL_BE_SEARCHED;
+import static com.mobydigital.recruiting.utils.Constant.WILL_BE_UPDATED;
+
 @Slf4j
 @Service
 public class TechnologyServiceImp implements TechnologyService {
+
     @Autowired
     TechnologyRepository technologyRepository;
     @Autowired
@@ -26,80 +43,79 @@ public class TechnologyServiceImp implements TechnologyService {
     @Override
     public void createTechnology(TechnologyDto request) {
         try {
-            log.info("Technology will be created");
+            log.info(TECHNOLOGY + WILL_BE_CREATED);
             List<Technology> technologyList = technologyRepository.findAll();
             if (technologyList.stream().anyMatch(technology -> technology.getName().equals(request.getName()) && technology.getVersion().equals(request.getVersion()))) {
-                throw new DataAlreadyExistException("This Technology already exist");
+                throw new DataAlreadyExistException(ALREADY_EXIST);
             }
             Technology technology = modelMapper.map(request, Technology.class);
-            log.info("Technology will be saved in the Data Base");
+            log.info(TECHNOLOGY + WILL_BE_SAVED_IN_THE_DATA_BASE);
             technologyRepository.save(technology);
-            log.info("Successfully Saved Technology");
+            log.info(SUCCESSFULLY_SAVED + TECHNOLOGY);
         } catch (DataAlreadyExistException e) {
-            log.error("This Technology already exist", e);
-
+            log.error(TECHNOLOGY + ALREADY_EXIST, e);
         }
     }
 
     @Override
     public void deleteTechnologyById(Long id) {
         try {
-            log.info("Technology Id: " + id + " will be deleted");
+            log.info(TECHNOLOGY + ID_EQUAL_TO + id + WILL_BE_DELETED);
             Optional<Technology> technology = technologyRepository.findById(id);
             if (technology.isEmpty()) {
-                throw new NotFoundException("Technology " + id + " not found");
+                throw new NotFoundException(TECHNOLOGY + id + NOT_FOUND);
             }
-            log.info("Technology will be deleted in the Data Base");
+            log.info(TECHNOLOGY + WILL_BE_DELETED_IN_THE_DATA_BASE);
             technologyRepository.delete(technology.get());
         } catch (NotFoundException e) {
-            log.error("Technology " + id + " not found", e);
+            log.error(TECHNOLOGY + id + NOT_FOUND, e);
         }
     }
 
     @Override
     public void updateTechnology(Long id, TechnologyDto request) {
         try {
-            log.info("Technology id: " + id + " will be updated");
+            log.info(ID_EQUAL_TO + id + WILL_BE_UPDATED);
             Optional<Technology> technology = technologyRepository.findById(id);
             if (technology.isEmpty()) {
-                throw new NotFoundException("Technology id: " + id + " not found");
+                throw new NotFoundException(ID_EQUAL_TO + id + NOT_FOUND);
             }
             technology.get().setName(request.getName());
             technology.get().setVersion(request.getVersion());
-            log.info("Technology will be saved in the Data Base");
+            log.info(TECHNOLOGY + WILL_BE_SAVED_IN_THE_DATA_BASE);
             technologyRepository.save(technology.get());
-            log.info("Successfully updated Technology");
+            log.info(SUCCESSFULLY_UPDATED + TECHNOLOGY);
         } catch (NotFoundException e) {
-            log.error("Technology id: " + id + " not found", e);
+            log.error(TECHNOLOGY + ID_EQUAL_TO + id + NOT_FOUND, e);
         }
     }
 
     @Override
     public List<TechnologyDto> getAllTechnologies() {
-        log.info("All Technologies will be searched");
+        log.info(TECHNOLOGIES + WILL_BE_SEARCHED);
         List<Technology> technologyList = technologyRepository.findAll();
         List<TechnologyDto> technologyDtoList = new ArrayList<>();
         technologyList.forEach(technology -> {
-            log.info("Technology id: " + technology.getId() + " is being added to the list");
+            log.info(TECHNOLOGY + ID_EQUAL_TO + technology.getId() + ADDED_TO_THE_LIST);
             technologyDtoList.add(modelMapper.map(technology, TechnologyDto.class));
         });
-        log.info("Technologies searched successfully");
+        log.info(SUCCESSFULLY_SEARCHED + TECHNOLOGIES);
         return technologyDtoList;
     }
 
     @Override
     public TechnologyDto getTechnologyById(Long id) {
 
-        log.info("Technology id: " + id + " will be searched");
+        log.info(TECHNOLOGY + ID_EQUAL_TO + id + WILL_BE_SEARCHED);
         Optional<Technology> technology = technologyRepository.findById(id);
         try {
             if (technology.isEmpty()) {
-                throw new NotFoundException("Technology " + id + " not found");
+                throw new NotFoundException(TECHNOLOGY + id + NOT_FOUND);
             }
         } catch (NotFoundException e) {
-            log.error("Technology " + id + " not found", e);
+            log.error(TECHNOLOGY + id + NOT_FOUND, e);
         }
-        log.info("Technology searched successfully");
+        log.info(SUCCESSFULLY_SEARCHED + TECHNOLOGY);
         return modelMapper.map(technology.get(), TechnologyDto.class);
 
     }
@@ -107,16 +123,16 @@ public class TechnologyServiceImp implements TechnologyService {
     @Override
     public Technology returnTechnologyById(Long id) {
 
-        log.info("Technology id: " + id + " will be searched");
+        log.info(TECHNOLOGY + ID_EQUAL_TO + id + WILL_BE_SEARCHED);
         Optional<Technology> technology = technologyRepository.findById(id);
         try {
             if (technology.isEmpty()) {
-                throw new NotFoundException("Technology " + id + " not found");
+                throw new NotFoundException(TECHNOLOGY + id + NOT_FOUND);
             }
         } catch (NotFoundException e) {
-            log.error("Technology " + id + " not found", e);
+            log.error(TECHNOLOGY + id + NOT_FOUND, e);
         }
-        log.info("Technology searched successfully");
+        log.info(SUCCESSFULLY_SEARCHED + TECHNOLOGY);
         return technology.get();
 
     }
