@@ -1,5 +1,9 @@
 package com.mobydigital.recruiting.utils;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Constant {
     public static final String SUCCESSFULLY_SAVED = "Successfully Saved ";
     public static final String SUCCESSFULLY_UPDATED = "Successfully Updated ";
