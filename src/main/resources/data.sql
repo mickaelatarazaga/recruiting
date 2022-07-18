@@ -5,7 +5,7 @@ INSERT INTO `technologies` (`id`, `name`,`version`) VALUES
 (4, 'Hibernate',null),
 (5, 'Spring',null);
 
-INSERT INTO `candidates` (`id`,`deleted`, `first_name`,`last_name`, `type_dni`, `dni_number`,`birthday`) VALUES
+INSERT INTO `candidates` (`id`,`deleted`, `first_name`,`last_name`, `type_dni`, `dni_number`,`birth_date`) VALUES
 (1, false,'Mickaela', 'Tarazaga',0,'35879856', '1996-10-25');
 
 INSERT INTO `experiences` (`id`,`candidate_id`, `technology_id`,`years_experience`) VALUES

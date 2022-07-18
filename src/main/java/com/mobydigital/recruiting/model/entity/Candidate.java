@@ -51,6 +51,7 @@ public class Candidate {
 
     @NotNull(message = "Birthday cannot be null")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @Column(name = "birth_date")
     private Date birthDate;
 
 }
