@@ -1,6 +1,8 @@
 package com.mobydigital.recruiting.util;
 
 import com.mobydigital.recruiting.model.dto.CandidateDto;
+import com.mobydigital.recruiting.model.dto.ExperienceDto;
+import com.mobydigital.recruiting.model.dto.TechnologyDto;
 import com.mobydigital.recruiting.model.enums.TypeOfDni;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -12,6 +14,14 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class TestUtil {
     public static Long getCandidateId() {
+        return 1L;
+    }
+
+    public static Long getExperienceId() {
+        return 1L;
+    }
+
+    public static Long getTechnologyId() {
         return 1L;
     }
 
@@ -29,4 +39,26 @@ public final class TestUtil {
         return new ArrayList<>(Arrays.asList(getCandidateDto()));
     }
 
+    public static ExperienceDto getExperienceDto() {
+        return ExperienceDto.builder()
+                .candidateId(1L)
+                .technologyId(1L)
+                .yearsExperience(5)
+                .build();
+    }
+
+    public static List<ExperienceDto> getListExperienceDto() {
+        return new ArrayList<>(Arrays.asList(getExperienceDto()));
+    }
+
+    public static TechnologyDto getTechnologyDto() {
+        return TechnologyDto.builder()
+                .name("Python")
+                .version("3.10.5")
+                .build();
+    }
+
+    public static List<TechnologyDto> getListTechnologyDto() {
+        return new ArrayList<>(Arrays.asList(getTechnologyDto()));
+    }
 }
