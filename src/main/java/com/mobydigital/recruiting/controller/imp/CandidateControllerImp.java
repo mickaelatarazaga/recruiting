@@ -63,7 +63,7 @@ public class CandidateControllerImp implements CandidateController {
     })
     @PutMapping("/{id}")
     public ResponseEntity<HttpStatus> updateCandidate(@PathVariable Long id, @Valid @RequestBody CandidateDto request) {
-        candidateService.updateCandidateByDni(id, request);
+        candidateService.updateCandidateById(id, request);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

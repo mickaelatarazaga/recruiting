@@ -80,7 +80,7 @@ public class CandidateServiceImp implements CandidateService {
     }
 
     @Override
-    public void updateCandidateByDni(Long id, CandidateDto request) {
+    public void updateCandidateById(Long id, CandidateDto request) {
         try {
             log.info(CANDIDATE + ID_EQUAL_TO + id + WILL_BE_UPDATED);
             Optional<Candidate> candidate = candidateRepository.findById(id);

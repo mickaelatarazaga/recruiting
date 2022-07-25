@@ -11,7 +11,7 @@ public interface CandidateService {
 
     void deleteCandidateById(Long id);
 
-    void updateCandidateByDni(Long id, CandidateDto request);
+    void updateCandidateById(Long id, CandidateDto request);
 
     CandidateDto getCandidateById(Long id);
 
