@@ -31,13 +31,6 @@ class CandidateServiceImpTest {
     @Mock
     private ModelMapper modelMapper;
 
-    @DisplayName("Return DataAlreadyExistException when the DNI Candidate's already exist")
-    @Test
-    void createCandidate_Exception() {
-        when(candidateRepository.findByDniNumber(getCandidateDto().getDniNumber())).thenReturn(getOptionalCandidate());
-        assertThrows(DataAlreadyExistException.class, () -> candidateService.createCandidate(getCandidateDto()));
-
-    }
 
     @DisplayName("Check createCandidate Method")
     @Nested
@@ -51,6 +44,14 @@ class CandidateServiceImpTest {
             candidateService.createCandidate(getCandidateDto());
             verify(candidateRepository, times(1)).findByDniNumber(getCandidateDto().getDniNumber());
             verify(candidateRepository, times(1)).save(any(Candidate.class));
+        }
+
+        @DisplayName("Return DataAlreadyExistException when the DNI Candidate's already exist")
+        @Test
+        void createCandidate_Exception() {
+            when(candidateRepository.findByDniNumber(getCandidateDto().getDniNumber())).thenReturn(getOptionalCandidate());
+            assertThrows(DataAlreadyExistException.class, () -> candidateService.createCandidate(getCandidateDto()));
+
         }
     }
 
