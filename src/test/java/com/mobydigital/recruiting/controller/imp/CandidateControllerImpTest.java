@@ -27,6 +27,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -34,9 +35,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class CandidateControllerImpTest {
     @Autowired
-    protected MockMvc mockMvc;
+    private MockMvc mockMvc;
     @MockBean
-    protected CandidateServiceImp candidateService;
+    private CandidateServiceImp candidateService;
 
     @Test
     @DisplayName("Successfully saved candidate")
@@ -61,6 +62,31 @@ class CandidateControllerImpTest {
                 .andExpect(result -> assertThrows(DataAlreadyExistException.class, () -> candidateService.createCandidate(getCandidateDto())));
         verify(candidateService, atLeastOnce()).createCandidate(any(CandidateDto.class));
     }
+
+    @Test
+    @DisplayName("Successfully updated candidate")
+    void updateCandidate_candidateUpdated() throws Exception {
+        String candidateDto = new Gson().toJson(getCandidateDto());
+        mockMvc.perform(put("/candidate/{id}", getCandidateId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(candidateDto))
+                .andExpect(status().isOk());
+        verify(candidateService, atLeastOnce()).updateCandidateById(getCandidateId(), getCandidateDto());
+    }
+
+    @Test
+    @DisplayName("Return NotFoundException when the candidate's Id to update not found")
+    void updateCandidate_candidateIdNotFound() throws Exception {
+        doThrow(NotFoundException.class).when(candidateService).updateCandidateById(getCandidateId(), getCandidateDto());
+        String candidateDto = new Gson().toJson(getCandidateDto());
+        mockMvc.perform(put("/candidate/{id}", getCandidateId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(candidateDto))
+                .andExpect(status().isOk())
+                .andExpect(result -> assertThrows(NotFoundException.class, () -> candidateService.updateCandidateById(getCandidateId(), getCandidateDto())));
+        verify(candidateService, atLeastOnce()).updateCandidateById(getCandidateId(), getCandidateDto());
+    }
+
 
     @Test
     @DisplayName("Successfully deleted candidate")
