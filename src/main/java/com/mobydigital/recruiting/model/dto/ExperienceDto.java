@@ -2,12 +2,13 @@ package com.mobydigital.recruiting.model.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Builder
+
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ExperienceDto {

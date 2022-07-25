@@ -3,12 +3,13 @@ package com.mobydigital.recruiting.model.dto;
 import com.mobydigital.recruiting.model.enums.TypeOfDni;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
-
+@Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
