@@ -36,7 +36,7 @@ public class CandidateControllerImp implements CandidateController {
     @Operation(summary = "Save new Candidate")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Successfully Saved Candidate", content = @Content),
-            @ApiResponse(responseCode = "409", description = "The Candidate DNI number already exist", content = @Content)
+            @ApiResponse(responseCode = "200", description = "The Candidate DNI number already exist", content = @Content)
     })
     @PostMapping("/add")
     public ResponseEntity<HttpStatus> saveCandidate(@Valid @RequestBody CandidateDto request) {
@@ -47,7 +47,7 @@ public class CandidateControllerImp implements CandidateController {
     @Operation(summary = "Delete Candidate by Id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully deleted Candidate", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Candidate not found", content = @Content)
+            @ApiResponse(responseCode = "200", description = "Candidate not found", content = @Content)
 
     })
     @DeleteMapping("/{id}")
@@ -59,7 +59,7 @@ public class CandidateControllerImp implements CandidateController {
     @Operation(summary = "Update Candidate by Id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Successfully updated Candidate", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Candidate not found", content = @Content)
+            @ApiResponse(responseCode = "200", description = "Candidate not found", content = @Content)
     })
     @PutMapping("/{id}")
     public ResponseEntity<HttpStatus> updateCandidate(@PathVariable Long id, @Valid @RequestBody CandidateDto request) {
@@ -70,7 +70,7 @@ public class CandidateControllerImp implements CandidateController {
     @Operation(summary = "Get Candidate by Id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully deleted Candidate", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CandidateDto.class))),
-            @ApiResponse(responseCode = "404", description = "Candidate not found", content = @Content)
+            @ApiResponse(responseCode = "200", description = "Candidate not found", content = @Content)
 
     })
     @GetMapping("/{id}")
