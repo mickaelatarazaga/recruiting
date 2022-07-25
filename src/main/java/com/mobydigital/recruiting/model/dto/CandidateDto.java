@@ -29,7 +29,7 @@ public class CandidateDto {
     @Schema(name = "dniNumber", example = "39879638", type = "String", required = true)
     private String dniNumber;
 
-    @NotBlank(message = "Birthday cannot be blank")
-    @Schema(name = "birthday", example = "1998-11-02", type = "String", required = true)
+    @NotBlank(message = "birthDate cannot be blank")
+    @Schema(name = "birthDate", example = "1998-11-02", type = "String", required = true)
     private String birthDate;
 }
