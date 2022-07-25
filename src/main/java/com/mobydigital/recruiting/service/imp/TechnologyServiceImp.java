@@ -54,6 +54,7 @@ public class TechnologyServiceImp implements TechnologyService {
             log.info(SUCCESSFULLY_SAVED + TECHNOLOGY);
         } catch (DataAlreadyExistException e) {
             log.error(TECHNOLOGY + ALREADY_EXIST, e);
+            throw new DataAlreadyExistException(e.getMessage());
         }
     }
 
@@ -69,6 +70,7 @@ public class TechnologyServiceImp implements TechnologyService {
             technologyRepository.delete(technology.get());
         } catch (NotFoundException e) {
             log.error(TECHNOLOGY + id + NOT_FOUND, e);
+            throw new NotFoundException(e.getMessage());
         }
     }
 
@@ -87,6 +89,7 @@ public class TechnologyServiceImp implements TechnologyService {
             log.info(SUCCESSFULLY_UPDATED + TECHNOLOGY);
         } catch (NotFoundException e) {
             log.error(TECHNOLOGY + ID_EQUAL_TO + id + NOT_FOUND, e);
+            throw new NotFoundException(e.getMessage());
         }
     }
 
@@ -115,8 +118,8 @@ public class TechnologyServiceImp implements TechnologyService {
             return modelMapper.map(technology.get(), TechnologyDto.class);
         } catch (NotFoundException e) {
             log.error(TECHNOLOGY + id + NOT_FOUND, e);
+            throw new NotFoundException(e.getMessage());
         }
-        return null;
     }
 
     @Override
@@ -131,7 +134,7 @@ public class TechnologyServiceImp implements TechnologyService {
             return technology.get();
         } catch (NotFoundException e) {
             log.error(TECHNOLOGY + id + NOT_FOUND, e);
+            throw new NotFoundException(e.getMessage());
         }
-        return null;
     }
 }

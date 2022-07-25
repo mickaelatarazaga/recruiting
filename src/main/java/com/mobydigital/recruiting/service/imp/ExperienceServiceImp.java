@@ -67,6 +67,7 @@ public class ExperienceServiceImp implements ExperienceService {
             log.info(SUCCESSFULLY_SAVED + EXPERIENCE);
         } catch (DataAlreadyExistException e) {
             log.error(EXPERIENCE + ALREADY_EXIST, e);
+            throw new DataAlreadyExistException(e.getMessage());
         }
     }
 
@@ -82,6 +83,7 @@ public class ExperienceServiceImp implements ExperienceService {
             experienceRepository.delete(experience.get());
         } catch (NotFoundException e) {
             log.error(EXPERIENCE + ID_EQUAL_TO + id + NOT_FOUND, e);
+            throw new NotFoundException(e.getMessage());
         }
     }
 
@@ -105,6 +107,7 @@ public class ExperienceServiceImp implements ExperienceService {
             log.info(SUCCESSFULLY_UPDATED + EXPERIENCE);
         } catch (NotFoundException e) {
             log.error(EXPERIENCE + ID_EQUAL_TO + id + NOT_FOUND, e);
+            throw new NotFoundException(e.getMessage());
         }
     }
 
@@ -120,8 +123,8 @@ public class ExperienceServiceImp implements ExperienceService {
             return modelMapper.map(experience.get(), ExperienceDto.class);
         } catch (NotFoundException e) {
             log.error(EXPERIENCE + ID_EQUAL_TO + id + WILL_BE_SEARCHED, e);
+            throw new NotFoundException(e.getMessage());
         }
-        return null;
     }
 
     @Override

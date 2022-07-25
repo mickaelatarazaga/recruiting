@@ -49,8 +49,8 @@ public class CandidateServiceImp implements CandidateService {
     public void createCandidate(CandidateDto request) {
         try {
             log.info(CANDIDATE + WILL_BE_CREATED);
-            List<Candidate> candidateList = candidateRepository.findAll();
-            if (candidateList.stream().anyMatch(candidate -> candidate.getDniNumber().equals(request.getDniNumber()))) {
+            Optional<Candidate> optionalCandidate = candidateRepository.findByDniNumber(request.getDniNumber());
+            if (optionalCandidate.isPresent()) {
                 throw new DataAlreadyExistException(CANDIDATE + DNI_EQUAL_TO + request.getDniNumber() + ALREADY_EXIST);
             }
             Candidate candidate = modelMapper.map(request, Candidate.class);
@@ -59,6 +59,7 @@ public class CandidateServiceImp implements CandidateService {
             log.info(SUCCESSFULLY_SAVED + CANDIDATE);
         } catch (DataAlreadyExistException e) {
             log.error(CANDIDATE + DNI_EQUAL_TO + request.getDniNumber() + ALREADY_EXIST, e);
+            throw new DataAlreadyExistException(e.getMessage());
         }
     }
 
@@ -76,6 +77,7 @@ public class CandidateServiceImp implements CandidateService {
             log.info(SUCCESSFULLY_DELETED + CANDIDATE);
         } catch (NotFoundException e) {
             log.error(CANDIDATE + ID_EQUAL_TO + id + NOT_FOUND, e);
+            throw new NotFoundException(e.getMessage());
         }
     }
 
@@ -99,6 +101,7 @@ public class CandidateServiceImp implements CandidateService {
             log.error(CANDIDATE + ID_EQUAL_TO + id + NOT_FOUND, e);
         } catch (ParseException e) {
             log.error("Error formatting the date", e.getMessage());
+            throw new NotFoundException(e.getMessage());
         }
     }
 
@@ -114,8 +117,8 @@ public class CandidateServiceImp implements CandidateService {
             return modelMapper.map(candidate.get(), CandidateDto.class);
         } catch (NotFoundException e) {
             log.error(CANDIDATE + ID_EQUAL_TO + id + NOT_FOUND, e);
+            throw new NotFoundException(e.getMessage());
         }
-        return null;
     }
 
     @Override
@@ -130,8 +133,8 @@ public class CandidateServiceImp implements CandidateService {
             return candidate.get();
         } catch (NotFoundException e) {
             log.error(CANDIDATE + ID_EQUAL_TO + id + NOT_FOUND, e);
+            throw new NotFoundException(e.getMessage());
         }
-        return null;
     }
 
     @Override
