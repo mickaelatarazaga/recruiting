@@ -3,6 +3,7 @@ package com.mobydigital.recruiting.util;
 import com.mobydigital.recruiting.model.dto.CandidateDto;
 import com.mobydigital.recruiting.model.dto.ExperienceDto;
 import com.mobydigital.recruiting.model.dto.TechnologyDto;
+import com.mobydigital.recruiting.model.entity.Candidate;
 import com.mobydigital.recruiting.model.enums.TypeOfDni;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class TestUtil {
@@ -33,6 +35,16 @@ public final class TestUtil {
                 .typeOfDni(TypeOfDni.DNI)
                 .dniNumber("47456345")
                 .build();
+    }
+
+    public static Optional<Candidate> getOptionalCandidate() {
+       
+        return Optional.ofNullable(Candidate
+                .builder().firstName("Mickaela")
+                .lastName("Tarazaga")
+                .typeOfDni(TypeOfDni.DNI)
+                .dniNumber("47456345")
+                .build());
     }
 
     public static List<CandidateDto> getListCandidateDto() {
