@@ -1,6 +1,7 @@
 package com.mobydigital.recruiting.service.imp;
 
 import com.mobydigital.recruiting.exception.DataAlreadyExistException;
+import com.mobydigital.recruiting.exception.NotFoundException;
 import com.mobydigital.recruiting.model.entity.Candidate;
 import com.mobydigital.recruiting.repository.CandidateRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -14,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Optional;
 
 import static com.mobydigital.recruiting.util.TestUtil.getCandidateDto;
+import static com.mobydigital.recruiting.util.TestUtil.getCandidateId;
 import static com.mobydigital.recruiting.util.TestUtil.getOptionalCandidate;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -34,7 +36,7 @@ class CandidateServiceImpTest {
 
     @DisplayName("Check createCandidate Method")
     @Nested
-    class CheckValidStringUrl {
+    class CheckCreateCandidate {
         @DisplayName("Successfully saved candidate")
         @Test
         void createCandidate_SuccessfullySaved() {
@@ -51,6 +53,28 @@ class CandidateServiceImpTest {
         void createCandidate_Exception() {
             when(candidateRepository.findByDniNumber(getCandidateDto().getDniNumber())).thenReturn(getOptionalCandidate());
             assertThrows(DataAlreadyExistException.class, () -> candidateService.createCandidate(getCandidateDto()));
+
+        }
+    }
+
+    @DisplayName("Check deleteCandidateById Method")
+    @Nested
+    class CheckDeleteCandidate {
+        @DisplayName("Successfully deleted candidate")
+        @Test
+        void deleteCandidateById_SuccessfullyDeleted() {
+            when(candidateRepository.findById(getCandidateId())).thenReturn(getOptionalCandidate());
+            when(candidateRepository.save(any(Candidate.class))).thenReturn(getOptionalCandidate().get());
+            candidateService.deleteCandidateById(getCandidateId());
+            verify(candidateRepository, times(1)).findById(getCandidateId());
+            verify(candidateRepository, times(1)).save(any(Candidate.class));
+        }
+
+        @DisplayName("Return NotFoundException when the Id Candidate's not found")
+        @Test
+        void deleteCandidateById_Exception() {
+            when(candidateRepository.findById(getCandidateId())).thenReturn(Optional.ofNullable(null));
+            assertThrows(NotFoundException.class, () -> candidateService.deleteCandidateById(getCandidateId()));
 
         }
     }
