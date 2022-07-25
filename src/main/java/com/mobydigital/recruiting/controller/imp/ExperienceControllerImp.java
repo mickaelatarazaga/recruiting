@@ -59,11 +59,11 @@ public class ExperienceControllerImp implements ExperienceController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Successfully updated Experience", content = @Content),
             @ApiResponse(responseCode = "404", description = "Experience not found", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Candiate ID not found", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Candidate ID not found", content = @Content),
             @ApiResponse(responseCode = "404", description = "Technology ID not found", content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> updateTechnology(@PathVariable Long id, @RequestBody ExperienceDto request) {
+    public ResponseEntity<HttpStatus> updateExperience(@PathVariable Long id, @RequestBody ExperienceDto request) {
         experienceService.updateExperience(id, request);
         return new ResponseEntity<>(HttpStatus.OK);
     }

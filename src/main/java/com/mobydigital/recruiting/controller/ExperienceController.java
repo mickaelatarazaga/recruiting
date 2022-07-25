@@ -14,7 +14,7 @@ public interface ExperienceController {
 
     ResponseEntity<HttpStatus> deleteExperience(@PathVariable Long id);
 
-    ResponseEntity<HttpStatus> updateTechnology(@PathVariable Long id, @RequestBody ExperienceDto request);
+    ResponseEntity<HttpStatus> updateExperience(@PathVariable Long id, @RequestBody ExperienceDto request);
 
     ResponseEntity<ExperienceDto> getExperienceById(@PathVariable Long id);
 
