@@ -21,8 +21,10 @@ import static com.mobydigital.recruiting.util.TestUtil.getOptionalTechnology;
 import static com.mobydigital.recruiting.util.TestUtil.getTechnologyDto;
 import static com.mobydigital.recruiting.util.TestUtil.getTechnologyId;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -91,6 +93,51 @@ class TechnologyServiceImpTest {
                 assertThrows(NotFoundException.class, () -> technologyService.deleteTechnologyById(getTechnologyId()));
 
             }
+        }
+
+        @DisplayName("Check updateTechnology Method")
+        @Nested
+        class CheckUpdateTechnology {
+            @DisplayName("Successfully updated technology")
+            @Test
+            void updateTechnology_SuccessfullyUpdated() {
+                when(technologyRepository.findById(getTechnologyId())).thenReturn(getOptionalTechnology());
+                when(technologyRepository.save(any(Technology.class))).thenReturn(getOptionalTechnology().get());
+                technologyService.updateTechnology(getTechnologyId(), getTechnologyDto());
+                verify(technologyRepository, times(1)).findById(getTechnologyId());
+                verify(technologyRepository, times(1)).save(any(Technology.class));
+            }
+
+            @DisplayName("Return NotFoundException when the Id Technology's not found")
+            @Test
+            void updateTechnology_NotFoundException() {
+                when(technologyRepository.findById(anyLong())).thenReturn(Optional.ofNullable(null));
+                assertThrows(NotFoundException.class, () -> technologyService.updateTechnology(getTechnologyId(), getTechnologyDto()));
+
+            }
+        }
+
+    }
+
+
+    @DisplayName("Check getTechnologyById Method")
+    @Nested
+    class CheckGetCandidateById {
+        @DisplayName("Successfully searched experience")
+        @Test
+        void getTechnologyById_SuccessfullySearched() {
+            when(technologyRepository.findById(getTechnologyId())).thenReturn(getOptionalTechnology());
+            when(modelMapper.map(getOptionalTechnology().get(), TechnologyDto.class)).thenReturn(getTechnologyDto());
+            TechnologyDto technologySearched = technologyService.getTechnologyById(getTechnologyId());
+            verify(technologyRepository, times(1)).findById(getTechnologyId());
+            assertNotNull(technologySearched);
+        }
+
+        @DisplayName("Return NotFoundException when the Id Technology's not found")
+        @Test
+        void getTechnologyById_Exception() {
+            when(technologyRepository.findById(getTechnologyId())).thenReturn(Optional.ofNullable(null));
+            assertThrows(NotFoundException.class, () -> technologyService.getTechnologyById(getTechnologyId()));
         }
     }
 
