@@ -4,6 +4,8 @@ import com.mobydigital.recruiting.model.dto.CandidateDto;
 import com.mobydigital.recruiting.model.dto.ExperienceDto;
 import com.mobydigital.recruiting.model.dto.TechnologyDto;
 import com.mobydigital.recruiting.model.entity.Candidate;
+import com.mobydigital.recruiting.model.entity.Experience;
+import com.mobydigital.recruiting.model.entity.Technology;
 import com.mobydigital.recruiting.model.enums.TypeOfDni;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -47,12 +49,37 @@ public final class TestUtil {
                 .build());
     }
 
+    public static Optional<Technology> getOptionalTechnology() {
+
+        return Optional.ofNullable(Technology
+                .builder()
+                .id(1L)
+                .name("Phyton")
+                .version("3.10.5")
+                .build());
+    }
+
+    public static Optional<Experience> getOptionalExperience() {
+
+        return Optional.ofNullable(Experience
+                .builder()
+                .id(1L)
+                .yearsExperience(6)
+                .technology(getOptionalTechnology().get())
+                .candidate(getOptionalCandidate().get())
+                .build());
+    }
+
     public static List<CandidateDto> getListCandidateDto() {
         return new ArrayList<>(Arrays.asList(getCandidateDto()));
     }
 
     public static List<Candidate> getListCandidate() {
         return new ArrayList<>(Arrays.asList(getOptionalCandidate().get()));
+    }
+
+    public static List<Experience> getListExperience() {
+        return new ArrayList<>(Arrays.asList(getOptionalExperience().get()));
     }
 
     public static ExperienceDto getExperienceDto() {
@@ -77,4 +104,15 @@ public final class TestUtil {
     public static List<TechnologyDto> getListTechnologyDto() {
         return new ArrayList<>(Arrays.asList(getTechnologyDto()));
     }
+
+    public static Experience getExperience() {
+        return Experience.builder()
+                .id(1L)
+                .yearsExperience(6)
+                .technology(getOptionalTechnology().get())
+                .candidate(getOptionalCandidate().get())
+                .build();
+
+    }
+
 }
