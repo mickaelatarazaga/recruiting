@@ -13,10 +13,12 @@ import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.mobydigital.recruiting.util.TestUtil.getCandidateDto;
 import static com.mobydigital.recruiting.util.TestUtil.getCandidateId;
+import static com.mobydigital.recruiting.util.TestUtil.getListCandidate;
 import static com.mobydigital.recruiting.util.TestUtil.getOptionalCandidate;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -36,6 +38,15 @@ class CandidateServiceImpTest {
     @Mock
     private ModelMapper modelMapper;
 
+    @DisplayName("Successfully searched candidates")
+    @Test
+    void getAllCandidates_SuccessfullySearched() {
+        when(candidateRepository.findAll()).thenReturn(getListCandidate());
+        when(modelMapper.map(any(Candidate.class), CandidateDto.class)).thenReturn(getCandidateDto());
+        List<CandidateDto> candidatesSearched = candidateService.getAllCandidates();
+        verify(candidateRepository, times(1)).findAll();
+        assertNotNull(candidatesSearched);
+    }
 
     @DisplayName("Check createCandidate Method")
     @Nested
@@ -122,7 +133,27 @@ class CandidateServiceImpTest {
         void getCandidateById_Exception() {
             when(candidateRepository.findById(getCandidateId())).thenReturn(Optional.ofNullable(null));
             assertThrows(NotFoundException.class, () -> candidateService.getCandidateById(getCandidateId()));
-
         }
     }
+
+    @DisplayName("Check returnCandidateById Method")
+    @Nested
+    class CheckReturnCandidateById {
+        @DisplayName("Successfully searched candidate")
+        @Test
+        void returnCandidateById_SuccessfullySearched() {
+            when(candidateRepository.findById(getCandidateId())).thenReturn(getOptionalCandidate());
+            Candidate candidateSearched = candidateService.returnCandidateById(getCandidateId());
+            verify(candidateRepository, times(1)).findById(getCandidateId());
+            assertNotNull(candidateSearched);
+        }
+
+        @DisplayName("Return NotFoundException when the Id Candidate's not found")
+        @Test
+        void returnCandidateById_Exception() {
+            when(candidateRepository.findById(getCandidateId())).thenReturn(Optional.ofNullable(null));
+            assertThrows(NotFoundException.class, () -> candidateService.getCandidateById(getCandidateId()));
+        }
+    }
+
 }

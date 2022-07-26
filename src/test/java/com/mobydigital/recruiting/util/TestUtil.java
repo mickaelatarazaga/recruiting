@@ -38,7 +38,7 @@ public final class TestUtil {
     }
 
     public static Optional<Candidate> getOptionalCandidate() {
-       
+
         return Optional.ofNullable(Candidate
                 .builder().firstName("Mickaela")
                 .lastName("Tarazaga")
@@ -49,6 +49,10 @@ public final class TestUtil {
 
     public static List<CandidateDto> getListCandidateDto() {
         return new ArrayList<>(Arrays.asList(getCandidateDto()));
+    }
+
+    public static List<Candidate> getListCandidate() {
+        return new ArrayList<>(Arrays.asList(getOptionalCandidate().get()));
     }
 
     public static ExperienceDto getExperienceDto() {
