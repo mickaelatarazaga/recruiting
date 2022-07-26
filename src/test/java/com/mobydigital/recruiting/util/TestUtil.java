@@ -82,6 +82,10 @@ public final class TestUtil {
         return new ArrayList<>(Arrays.asList(getOptionalExperience().get()));
     }
 
+    public static List<Technology> getListTechnology() {
+        return new ArrayList<>(Arrays.asList(getOptionalTechnology().get()));
+    }
+
     public static ExperienceDto getExperienceDto() {
         return ExperienceDto.builder()
                 .candidateId(1L)
