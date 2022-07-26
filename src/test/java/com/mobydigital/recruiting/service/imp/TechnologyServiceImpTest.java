@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 import java.util.Optional;
 
+import static com.mobydigital.recruiting.util.TestUtil.getCandidateId;
 import static com.mobydigital.recruiting.util.TestUtil.getListTechnology;
 import static com.mobydigital.recruiting.util.TestUtil.getOptionalTechnology;
 import static com.mobydigital.recruiting.util.TestUtil.getTechnologyDto;
@@ -141,5 +142,24 @@ class TechnologyServiceImpTest {
         }
     }
 
+    @DisplayName("Check returnTechnologyById Method")
+    @Nested
+    class CheckReturnTechnologyById {
+        @DisplayName("Successfully searched technology")
+        @Test
+        void returnTechnologyById_SuccessfullySearched() {
+            when(technologyRepository.findById(getCandidateId())).thenReturn(getOptionalTechnology());
+            Technology technologySearched = technologyService.returnTechnologyById(getTechnologyId());
+            verify(technologyRepository, times(1)).findById(getTechnologyId());
+            assertNotNull(technologySearched);
+        }
+
+        @DisplayName("Return NotFoundException when the Id Technology's not found")
+        @Test
+        void returnTechnologyById_Exception() {
+            when(technologyRepository.findById(getTechnologyId())).thenReturn(Optional.ofNullable(null));
+            assertThrows(NotFoundException.class, () -> technologyService.returnTechnologyById(getTechnologyId()));
+        }
+    }
 
 }
