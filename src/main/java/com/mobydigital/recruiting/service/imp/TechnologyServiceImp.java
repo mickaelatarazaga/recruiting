@@ -44,8 +44,8 @@ public class TechnologyServiceImp implements TechnologyService {
     public void createTechnology(TechnologyDto request) {
         try {
             log.info(TECHNOLOGY + WILL_BE_CREATED);
-            List<Technology> technologyList = technologyRepository.findAll();
-            if (technologyList.stream().anyMatch(technology -> technology.getName().equals(request.getName()) && technology.getVersion().equals(request.getVersion()))) {
+            Optional<Technology> optionalTechnology = technologyRepository.findByNameAndVersion(request.getName(), request.getVersion());
+            if (optionalTechnology.isPresent()) {
                 throw new DataAlreadyExistException(ALREADY_EXIST);
             }
             Technology technology = modelMapper.map(request, Technology.class);
