@@ -1,6 +1,7 @@
 package com.mobydigital.recruiting.service.imp;
 
 import com.mobydigital.recruiting.exception.DataAlreadyExistException;
+import com.mobydigital.recruiting.exception.NotFoundException;
 import com.mobydigital.recruiting.model.dto.TechnologyDto;
 import com.mobydigital.recruiting.model.entity.Technology;
 import com.mobydigital.recruiting.repository.TechnologyRepository;
@@ -13,10 +14,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.mobydigital.recruiting.util.TestUtil.getListTechnology;
 import static com.mobydigital.recruiting.util.TestUtil.getOptionalTechnology;
 import static com.mobydigital.recruiting.util.TestUtil.getTechnologyDto;
+import static com.mobydigital.recruiting.util.TestUtil.getTechnologyId;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -51,21 +54,43 @@ class TechnologyServiceImpTest {
         @DisplayName("Successfully saved technology")
         @Test
         void createTechnology_SuccessfullySaved() {
-            when(technologyRepository.findAll()).thenReturn(null);
+            when(technologyRepository.findByNameAndVersion(getTechnologyDto().getName(), getTechnologyDto().getVersion())).thenReturn(Optional.ofNullable(null));
             when(technologyRepository.save(any(Technology.class))).thenReturn(getOptionalTechnology().get());
             when(modelMapper.map(getTechnologyDto(), Technology.class)).thenReturn(getOptionalTechnology().get());
             technologyService.createTechnology(getTechnologyDto());
-            verify(technologyRepository, times(1)).findAll();
+            verify(technologyRepository, times(1)).findByNameAndVersion(getTechnologyDto().getName(), getTechnologyDto().getVersion());
             verify(technologyRepository, times(1)).save(any(Technology.class));
         }
 
 
-        @DisplayName("Return DataAlreadyExistException when the experience by Candidate already exist")
+        @DisplayName("Return DataAlreadyExistException when technology already exist")
         @Test
         void createTechnology_Exception() {
-            when(technologyRepository.findAll()).thenReturn(getListTechnology());
+            when(technologyRepository.findByNameAndVersion(getTechnologyDto().getName(), getTechnologyDto().getVersion())).thenReturn(getOptionalTechnology());
             assertThrows(DataAlreadyExistException.class, () -> technologyService.createTechnology(getTechnologyDto()));
 
+        }
+
+
+        @DisplayName("Check deleteTechnologyById Method")
+        @Nested
+        class CheckDeleteTechnologyById {
+            @DisplayName("Successfully deleted technology")
+            @Test
+            void deleteTechnologyById_SuccessfullyDeleted() {
+                when(technologyRepository.findById(getTechnologyId())).thenReturn(getOptionalTechnology());
+                technologyService.deleteTechnologyById(getTechnologyId());
+                verify(technologyRepository, times(1)).findById(getTechnologyId());
+                verify(technologyRepository, times(1)).delete(any(Technology.class));
+            }
+
+            @DisplayName("Return NotFoundException when the Id Technology's not found")
+            @Test
+            void deleteTechnologyById_Exception() {
+                when(technologyRepository.findById(getTechnologyId())).thenReturn(Optional.ofNullable(null));
+                assertThrows(NotFoundException.class, () -> technologyService.deleteTechnologyById(getTechnologyId()));
+
+            }
         }
     }
 
