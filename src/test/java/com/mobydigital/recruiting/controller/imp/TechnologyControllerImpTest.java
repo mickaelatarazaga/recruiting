@@ -57,7 +57,7 @@ class TechnologyControllerImpTest {
         mockMvc.perform(post("/technology/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(technologyDto))
-                .andExpect(status().isOk())
+                .andExpect(status().isAccepted())
                 .andExpect(result -> assertThrows(DataAlreadyExistException.class, () -> technologyService.createTechnology(getTechnologyDto())));
         verify(technologyService, atLeastOnce()).createTechnology(any(TechnologyDto.class));
     }
@@ -81,7 +81,7 @@ class TechnologyControllerImpTest {
         mockMvc.perform(put("/technology/{id}", getTechnologyId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(technologyDto))
-                .andExpect(status().isOk())
+                .andExpect(status().isAccepted())
                 .andExpect(result -> assertThrows(NotFoundException.class, () -> technologyService.updateTechnology(getTechnologyId(), getTechnologyDto())));
         verify(technologyService, atLeastOnce()).updateTechnology(getTechnologyId(), getTechnologyDto());
     }
@@ -102,7 +102,7 @@ class TechnologyControllerImpTest {
         doThrow(NotFoundException.class).when(technologyService).deleteTechnologyById(getTechnologyId());
         mockMvc.perform(delete("/technology/{id}", getTechnologyId())
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                .andExpect(status().isAccepted())
                 .andExpect(result -> assertThrows(NotFoundException.class, () -> technologyService.deleteTechnologyById(getTechnologyId())));
         verify(technologyService, atLeastOnce()).deleteTechnologyById(getTechnologyId());
     }
@@ -124,7 +124,7 @@ class TechnologyControllerImpTest {
         doThrow(NotFoundException.class).when(technologyService).getTechnologyById(getTechnologyId());
         mockMvc.perform(get("/technology/{id}", getTechnologyId())
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                .andExpect(status().isAccepted())
                 .andExpect(result -> assertThrows(NotFoundException.class, () -> technologyService.getTechnologyById(getTechnologyId())));
         verify(technologyService, atLeastOnce()).getTechnologyById(getTechnologyId());
     }

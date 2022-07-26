@@ -56,7 +56,7 @@ class CandidateControllerImpTest {
         mockMvc.perform(post("/candidate/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(candidateDto))
-                .andExpect(status().isOk())
+                .andExpect(status().isAccepted())
                 .andExpect(result -> assertThrows(DataAlreadyExistException.class, () -> candidateService.createCandidate(getCandidateDto())));
         verify(candidateService, atLeastOnce()).createCandidate(any(CandidateDto.class));
     }
@@ -80,7 +80,7 @@ class CandidateControllerImpTest {
         mockMvc.perform(put("/candidate/{id}", getCandidateId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(candidateDto))
-                .andExpect(status().isOk())
+                .andExpect(status().isAccepted())
                 .andExpect(result -> assertThrows(NotFoundException.class, () -> candidateService.updateCandidateById(getCandidateId(), getCandidateDto())));
         verify(candidateService, atLeastOnce()).updateCandidateById(getCandidateId(), getCandidateDto());
     }
@@ -101,7 +101,7 @@ class CandidateControllerImpTest {
         doThrow(NotFoundException.class).when(candidateService).deleteCandidateById(getCandidateId());
         mockMvc.perform(delete("/candidate/{id}", getCandidateId())
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                .andExpect(status().isAccepted())
                 .andExpect(result -> assertThrows(NotFoundException.class, () -> candidateService.deleteCandidateById(getCandidateId())));
         verify(candidateService, atLeastOnce()).deleteCandidateById(getCandidateId());
     }
@@ -123,7 +123,7 @@ class CandidateControllerImpTest {
         doThrow(NotFoundException.class).when(candidateService).getCandidateById(getCandidateId());
         mockMvc.perform(get("/candidate/{id}", getCandidateId())
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                .andExpect(status().isAccepted())
                 .andExpect(result -> assertThrows(NotFoundException.class, () -> candidateService.getCandidateById(getCandidateId())));
         verify(candidateService, atLeastOnce()).getCandidateById(getCandidateId());
     }

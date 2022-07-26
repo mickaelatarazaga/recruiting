@@ -59,7 +59,7 @@ class ExperienceControllerImpTest {
         mockMvc.perform(post("/experience/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(experienceDto))
-                .andExpect(status().isOk())
+                .andExpect(status().isAccepted())
                 .andExpect(result -> assertThrows(DataAlreadyExistException.class, () -> experienceService.createExperience(getExperienceDto())));
         verify(experienceService, atLeastOnce()).createExperience(any(ExperienceDto.class));
     }
@@ -83,7 +83,7 @@ class ExperienceControllerImpTest {
         mockMvc.perform(put("/experience/{id}", getExperienceId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(experienceDto))
-                .andExpect(status().isOk())
+                .andExpect(status().isAccepted())
                 .andExpect(result -> assertThrows(NotFoundException.class, () -> experienceService.updateExperience(getExperienceId(), getExperienceDto())));
         verify(experienceService, atLeastOnce()).updateExperience(getExperienceId(), getExperienceDto());
     }
@@ -104,7 +104,7 @@ class ExperienceControllerImpTest {
         doThrow(NotFoundException.class).when(experienceService).deleteExperienceById(getExperienceId());
         mockMvc.perform(delete("/experience/{id}", getExperienceId())
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                .andExpect(status().isAccepted())
                 .andExpect(result -> assertThrows(NotFoundException.class, () -> experienceService.deleteExperienceById(getExperienceId())));
         verify(experienceService, atLeastOnce()).deleteExperienceById(getExperienceId());
     }
@@ -126,7 +126,7 @@ class ExperienceControllerImpTest {
         doThrow(NotFoundException.class).when(experienceService).getExperienceById(getExperienceId());
         mockMvc.perform(get("/experience/{id}", getExperienceId())
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                .andExpect(status().isAccepted())
                 .andExpect(result -> assertThrows(NotFoundException.class, () -> experienceService.getExperienceById(getCandidateId())));
         verify(experienceService, atLeastOnce()).getExperienceById(getExperienceId());
     }
