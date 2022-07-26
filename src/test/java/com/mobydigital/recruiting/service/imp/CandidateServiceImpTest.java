@@ -20,6 +20,7 @@ import static com.mobydigital.recruiting.util.TestUtil.getCandidateDto;
 import static com.mobydigital.recruiting.util.TestUtil.getCandidateId;
 import static com.mobydigital.recruiting.util.TestUtil.getListCandidate;
 import static com.mobydigital.recruiting.util.TestUtil.getOptionalCandidate;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -42,10 +43,10 @@ class CandidateServiceImpTest {
     @Test
     void getAllCandidates_SuccessfullySearched() {
         when(candidateRepository.findAll()).thenReturn(getListCandidate());
-        when(modelMapper.map(any(Candidate.class), CandidateDto.class)).thenReturn(getCandidateDto());
+        when(modelMapper.map(getOptionalCandidate().get(), CandidateDto.class)).thenReturn(getCandidateDto());
         List<CandidateDto> candidatesSearched = candidateService.getAllCandidates();
         verify(candidateRepository, times(1)).findAll();
-        assertNotNull(candidatesSearched);
+        assertEquals(getCandidateDto(), candidatesSearched.get(0));
     }
 
     @DisplayName("Check createCandidate Method")
@@ -152,7 +153,7 @@ class CandidateServiceImpTest {
         @Test
         void returnCandidateById_Exception() {
             when(candidateRepository.findById(getCandidateId())).thenReturn(Optional.ofNullable(null));
-            assertThrows(NotFoundException.class, () -> candidateService.getCandidateById(getCandidateId()));
+            assertThrows(NotFoundException.class, () -> candidateService.returnCandidateById(getCandidateId()));
         }
     }
 
