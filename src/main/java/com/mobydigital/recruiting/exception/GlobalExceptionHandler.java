@@ -10,12 +10,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DataAlreadyExistException.class)
     public ResponseEntity<HttpStatus> dataAlreadyExistException() {
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<HttpStatus> candidateNotFoundHandler() {
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
 

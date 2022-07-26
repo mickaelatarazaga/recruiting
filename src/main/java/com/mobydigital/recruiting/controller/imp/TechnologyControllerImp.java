@@ -34,7 +34,7 @@ public class TechnologyControllerImp implements TechnologyController {
     @Operation(summary = "Save new Technology")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Successfully Saved Technology", content = @Content),
-            @ApiResponse(responseCode = "409", description = "This Technology already exist", content = @Content)
+            @ApiResponse(responseCode = "202", description = "This Technology already exist", content = @Content)
     })
     @PostMapping("/add")
     public ResponseEntity<HttpStatus> saveTechnology(@Valid @RequestBody TechnologyDto request) {
@@ -45,7 +45,7 @@ public class TechnologyControllerImp implements TechnologyController {
     @Operation(summary = "Delete Technology by Id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully deleted Technology", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Technology not found", content = @Content)
+            @ApiResponse(responseCode = "202", description = "Technology not found", content = @Content)
 
     })
     @DeleteMapping("/{id}")
@@ -57,7 +57,7 @@ public class TechnologyControllerImp implements TechnologyController {
     @Operation(summary = "Update Technology by Id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Successfully updated Technology", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Technology not found", content = @Content)
+            @ApiResponse(responseCode = "202", description = "Technology not found", content = @Content)
     })
     @PutMapping("/{id}")
     public ResponseEntity<HttpStatus> updateTechnology(@PathVariable Long id, @RequestBody TechnologyDto request) {
@@ -68,7 +68,7 @@ public class TechnologyControllerImp implements TechnologyController {
     @Operation(summary = "Get Technology by Id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully deleted Technology", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TechnologyDto.class))),
-            @ApiResponse(responseCode = "404", description = "Technology not found", content = @Content)
+            @ApiResponse(responseCode = "202", description = "Technology not found", content = @Content)
 
     })
     @GetMapping("/{id}")

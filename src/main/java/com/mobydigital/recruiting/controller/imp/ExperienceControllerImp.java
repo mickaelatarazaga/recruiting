@@ -36,7 +36,7 @@ public class ExperienceControllerImp implements ExperienceController {
     @Operation(summary = "Save new Experience")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Successfully Saved Experience", content = @Content),
-            @ApiResponse(responseCode = "409", description = "This Experience already exist", content = @Content)
+            @ApiResponse(responseCode = "202", description = "This Experience already exist", content = @Content)
     })
     @PostMapping("/add")
     public ResponseEntity<HttpStatus> saveExperience(@Valid @RequestBody ExperienceDto request) {
@@ -47,7 +47,7 @@ public class ExperienceControllerImp implements ExperienceController {
     @Operation(summary = "Delete Experience by Id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully deleted Experience", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Experience not found", content = @Content)
+            @ApiResponse(responseCode = "202", description = "Experience not found", content = @Content)
 
     })
     @DeleteMapping("/{id}")
@@ -59,9 +59,9 @@ public class ExperienceControllerImp implements ExperienceController {
     @Operation(summary = "Update Experience by Id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Successfully updated Experience", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Experience not found", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Candidate ID not found", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Technology ID not found", content = @Content)
+            @ApiResponse(responseCode = "202", description = "Experience not found", content = @Content),
+            @ApiResponse(responseCode = "202", description = "Candidate ID not found", content = @Content),
+            @ApiResponse(responseCode = "202", description = "Technology ID not found", content = @Content)
     })
     @PutMapping("/{id}")
     public ResponseEntity<HttpStatus> updateExperience(@PathVariable Long id, @RequestBody ExperienceDto request) {
@@ -73,7 +73,7 @@ public class ExperienceControllerImp implements ExperienceController {
     @Operation(summary = "Get Experience by Id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully deleted Experience", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TechnologyDto.class))),
-            @ApiResponse(responseCode = "404", description = "Experience not found", content = @Content)
+            @ApiResponse(responseCode = "202", description = "Experience not found", content = @Content)
 
     })
     @GetMapping("/{id}")
@@ -94,7 +94,7 @@ public class ExperienceControllerImp implements ExperienceController {
     @Operation(summary = "Get All Experiences by Candidate Id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")),
-            @ApiResponse(responseCode = "404", description = "Candidate Id not found", content = @Content)
+            @ApiResponse(responseCode = "202", description = "Candidate Id not found", content = @Content)
     })
     @GetMapping("/{id}/all")
     public ResponseEntity<List<ExperienceDto>> getAllExperiencesByCandidate(@PathVariable Long id) {
