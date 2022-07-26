@@ -7,6 +7,7 @@ import com.mobydigital.recruiting.model.entity.Candidate;
 import com.mobydigital.recruiting.model.entity.Experience;
 import com.mobydigital.recruiting.model.entity.Technology;
 import com.mobydigital.recruiting.model.enums.TypeOfDni;
+import com.mobydigital.recruiting.model.projection.CandidateByTechnologyProjection;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +20,10 @@ import java.util.Optional;
 public final class TestUtil {
     public static Long getCandidateId() {
         return 1L;
+    }
+
+    public static String getTechnologyName() {
+        return "Java";
     }
 
     public static Long getExperienceId() {
@@ -84,6 +89,74 @@ public final class TestUtil {
 
     public static List<Technology> getListTechnology() {
         return new ArrayList<>(Arrays.asList(getOptionalTechnology().get()));
+    }
+
+    public static List<CandidateByTechnologyProjection> getListCandidateByTechnologyProjection() {
+        return new ArrayList<>(Arrays.asList(getCandidateProjection()));
+    }
+
+    public static CandidateByTechnologyProjection getCandidateProjection() {
+        return new CandidateByTechnologyProjection() {
+            @Override
+            public String getName() {
+                return null;
+            }
+
+            @Override
+            public String setName(String firstName) {
+                return null;
+            }
+
+            @Override
+            public String getLastname() {
+                return null;
+            }
+
+            @Override
+            public void setLastname(String lastName) {
+
+            }
+
+            @Override
+            public String getDocument() {
+                return null;
+            }
+
+            @Override
+            public void setDocument(String dniNumber) {
+
+            }
+
+            @Override
+            public String getDescription() {
+                return null;
+            }
+
+            @Override
+            public void setDescription(String technologyName) {
+
+            }
+
+            @Override
+            public String getVersion() {
+                return null;
+            }
+
+            @Override
+            public void setVersion(String version) {
+
+            }
+
+            @Override
+            public Integer getExperienceYears() {
+                return null;
+            }
+
+            @Override
+            public void setExperienceYears(Integer yearsExperience) {
+
+            }
+        };
     }
 
     public static ExperienceDto getExperienceDto() {

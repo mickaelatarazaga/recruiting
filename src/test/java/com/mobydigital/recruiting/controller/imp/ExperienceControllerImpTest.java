@@ -17,7 +17,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import static com.mobydigital.recruiting.util.TestUtil.getCandidateId;
 import static com.mobydigital.recruiting.util.TestUtil.getExperienceDto;
 import static com.mobydigital.recruiting.util.TestUtil.getExperienceId;
+import static com.mobydigital.recruiting.util.TestUtil.getListCandidateByTechnologyProjection;
 import static com.mobydigital.recruiting.util.TestUtil.getListExperienceDto;
+import static com.mobydigital.recruiting.util.TestUtil.getTechnologyName;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeastOnce;
@@ -149,6 +151,17 @@ class ExperienceControllerImpTest {
                 .andExpect(status().isOk())
                 .equals(getListExperienceDto());
         verify(experienceService, atLeastOnce()).getAllExperiencesByCandidate(getCandidateId());
+    }
+
+    @Test
+    @DisplayName("Successful candidates by technology list search ")
+    void findCandidatesByTechnologyName_successfullySearched() throws Exception {
+        when(experienceService.findCandidatesByTechnologyName(getTechnologyName())).thenReturn(getListCandidateByTechnologyProjection());
+        mockMvc.perform(get("/experience/all/{technologyName}", getTechnologyName())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .equals(getListCandidateByTechnologyProjection());
+        verify(experienceService, atLeastOnce()).findCandidatesByTechnologyName(getTechnologyName());
     }
 
 }

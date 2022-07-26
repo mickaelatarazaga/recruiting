@@ -1,6 +1,7 @@
 package com.mobydigital.recruiting.controller;
 
 import com.mobydigital.recruiting.model.dto.ExperienceDto;
+import com.mobydigital.recruiting.model.projection.CandidateByTechnologyProjection;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,4 +22,6 @@ public interface ExperienceController {
     ResponseEntity<List<ExperienceDto>> getAllExperiences();
 
     ResponseEntity<List<ExperienceDto>> getAllExperiencesByCandidate(@PathVariable Long id);
+
+    ResponseEntity<List<CandidateByTechnologyProjection>> findCandidatesByTechnologyName(@PathVariable String technologyName);
 }

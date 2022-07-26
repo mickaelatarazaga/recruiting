@@ -4,6 +4,7 @@ import com.mobydigital.recruiting.exception.DataAlreadyExistException;
 import com.mobydigital.recruiting.exception.NotFoundException;
 import com.mobydigital.recruiting.model.dto.ExperienceDto;
 import com.mobydigital.recruiting.model.entity.Experience;
+import com.mobydigital.recruiting.model.projection.CandidateByTechnologyProjection;
 import com.mobydigital.recruiting.repository.ExperienceRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -20,11 +21,13 @@ import static com.mobydigital.recruiting.util.TestUtil.getCandidateId;
 import static com.mobydigital.recruiting.util.TestUtil.getExperience;
 import static com.mobydigital.recruiting.util.TestUtil.getExperienceDto;
 import static com.mobydigital.recruiting.util.TestUtil.getExperienceId;
+import static com.mobydigital.recruiting.util.TestUtil.getListCandidateByTechnologyProjection;
 import static com.mobydigital.recruiting.util.TestUtil.getListExperience;
 import static com.mobydigital.recruiting.util.TestUtil.getOptionalCandidate;
 import static com.mobydigital.recruiting.util.TestUtil.getOptionalExperience;
 import static com.mobydigital.recruiting.util.TestUtil.getOptionalTechnology;
 import static com.mobydigital.recruiting.util.TestUtil.getTechnologyId;
+import static com.mobydigital.recruiting.util.TestUtil.getTechnologyName;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -67,6 +70,15 @@ class ExperienceServiceImpTest {
         List<ExperienceDto> experienceSearched = experienceService.getAllExperiencesByCandidate(getCandidateId());
         verify(experienceRepository, times(1)).findAllByCandidateId(getCandidateId());
         assertEquals(getExperienceDto(), experienceSearched.get(0));
+    }
+
+    @DisplayName("Successfully searched all candidates by Technology")
+    @Test
+    void findCandidatesByTechnologyName_SuccessfullySearched() {
+        when(experienceRepository.findByTechnologyName(getTechnologyName())).thenReturn(getListCandidateByTechnologyProjection());
+        List<CandidateByTechnologyProjection> experienceSearched = experienceService.findCandidatesByTechnologyName(getTechnologyName());
+        verify(experienceRepository, times(1)).findByTechnologyName(getTechnologyName());
+        assertNotNull(experienceSearched);
     }
 
     @DisplayName("Check createExperience Method")

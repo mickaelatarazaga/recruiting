@@ -6,6 +6,7 @@ import com.mobydigital.recruiting.model.dto.ExperienceDto;
 import com.mobydigital.recruiting.model.entity.Candidate;
 import com.mobydigital.recruiting.model.entity.Experience;
 import com.mobydigital.recruiting.model.entity.Technology;
+import com.mobydigital.recruiting.model.projection.CandidateByTechnologyProjection;
 import com.mobydigital.recruiting.repository.ExperienceRepository;
 import com.mobydigital.recruiting.service.CandidateService;
 import com.mobydigital.recruiting.service.ExperienceService;
@@ -151,5 +152,10 @@ public class ExperienceServiceImp implements ExperienceService {
         });
         log.info(SUCCESSFULLY_SEARCHED + EXPERIENCES);
         return experienceDtoList;
+    }
+
+    @Override
+    public List<CandidateByTechnologyProjection> findCandidatesByTechnologyName(String technologyName) {
+        return experienceRepository.findByTechnologyName(technologyName);
     }
 }

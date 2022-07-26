@@ -3,6 +3,7 @@ package com.mobydigital.recruiting.controller.imp;
 import com.mobydigital.recruiting.controller.ExperienceController;
 import com.mobydigital.recruiting.model.dto.ExperienceDto;
 import com.mobydigital.recruiting.model.dto.TechnologyDto;
+import com.mobydigital.recruiting.model.projection.CandidateByTechnologyProjection;
 import com.mobydigital.recruiting.service.ExperienceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -99,4 +100,14 @@ public class ExperienceControllerImp implements ExperienceController {
     public ResponseEntity<List<ExperienceDto>> getAllExperiencesByCandidate(@PathVariable Long id) {
         return new ResponseEntity<>(experienceService.getAllExperiencesByCandidate(id), HttpStatus.OK);
     }
+
+    @Operation(summary = "Get All Candidates by TechnologyName")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json"))
+    })
+    @GetMapping(value = "/all/{technologyName}")
+    public ResponseEntity<List<CandidateByTechnologyProjection>> findCandidatesByTechnologyName(String technologyName) {
+        return new ResponseEntity<>(experienceService.findCandidatesByTechnologyName(technologyName), HttpStatus.OK);
+    }
+
 }
