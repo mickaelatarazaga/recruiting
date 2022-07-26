@@ -99,9 +99,9 @@ public class CandidateServiceImp implements CandidateService {
             log.info(SUCCESSFULLY_UPDATED + CANDIDATE);
         } catch (NotFoundException e) {
             log.error(CANDIDATE + ID_EQUAL_TO + id + NOT_FOUND, e);
+            throw new NotFoundException(e.getMessage());
         } catch (ParseException e) {
             log.error("Error formatting the date", e.getMessage());
-            throw new NotFoundException(e.getMessage());
         }
     }
 
